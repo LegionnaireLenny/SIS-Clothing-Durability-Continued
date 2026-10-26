@@ -1,0 +1,12 @@
+Tag	Translation English
+STORY_Title	SIS Clothing Durability
+STORY_Description	This mod adds clothing durability and repair to the game. Your clothing can now break over time and depending on the damage you (or other characters) take. Clothing can be repaired using sewing kits that you will find around the world.
+
+MEMORY_SISCD_YourClothingBroke	你的 %1 坏了！	Your %1 broke!
+
+EQUIPMENT_SISCD_SewingKit	缝纫套件	Sewing Kit
+DESC_SISCD_SewingKit	可用于修补损坏的衣物。	Can be used to repair damaged clothing.
+
+RECIPE_SISLB_CraftSewingKit	工艺缝纫套件	Craft Sewing Kit
+
+SPEECH_SISCD_NPCClothingBroken	我的衣服破了	My clothing broke!

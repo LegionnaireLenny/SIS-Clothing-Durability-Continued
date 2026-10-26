@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Script xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <NextFreeSpeechID>2</NextFreeSpeechID>
+  <NextFreeTriggerID>1</NextFreeTriggerID>
+  <NextFreeConditionBlockID>1</NextFreeConditionBlockID>
+  <NextFreeQuestID>1</NextFreeQuestID>
+  <NextFreeQuestGroupID>1</NextFreeQuestGroupID>
+  <NextFreeTemplateID>1</NextFreeTemplateID>
+  <NextFreeInvaderID>1</NextFreeInvaderID>
+  <EditorScrollPos>
+    <x>120.542694</x>
+    <y>238.684448</y>
+  </EditorScrollPos>
+  <EditorZoomScale>0.8801896</EditorZoomScale>
+  <Speeches>
+    <Speech UniqueID="SISCD_NPCClothingBroken" x="665.343445" y="-633.4247" NativeText="My clothing broke!" Situation="CustomUseAction" Importance="Low" CanTalkOutOfRange="true">
+	  <Params/>
+      <PriorityTerms />
+      <Events />
+      <UninterruptibleEvents />
+    </Speech>
+  </Speeches>
+  <Triggers />
+  <ConditionBlocks />
+  <Quests />
+  <QuestGroups />
+  <Templates />
+  <Invaders />
+</Script>

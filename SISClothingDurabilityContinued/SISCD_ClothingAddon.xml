@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SISCD_ClothingTypeSettingsAddon>
+	<ClothingTypes>
+		<ClothingSettings>
+			<Name>MyModdedClothingPrototypeName</Name>
+			<CanDegradeOnAttack>true</CanDegradeOnAttack>
+			<CanDegradeOverTime>true</CanDegradeOverTime>
+			<CanDegradeOnDamaged>true</CanDegradeOnDamaged>
+			<DegradeRate>1</DegradeRate>
+			<MaxDurability>20</MaxDurability>
+			<MinPartsOnBroken>0</MinPartsOnBroken>
+			<MaxPartsOnBroken>2</MaxPartsOnBroken>
+			<DegradeOverTimePcnt>0.1</DegradeOverTimePcnt>
+			<DegradeOnAttackPcnt>0.1</DegradeOnAttackPcnt>
+			<DegradeOnExplosionDamagePcnt>0.6</DegradeOnExplosionDamagePcnt>
+			<DegradeOnBulletDamagePcnt>0.35</DegradeOnBulletDamagePcnt>
+			<DegradeOnArrowDamagePcnt>0.25</DegradeOnArrowDamagePcnt>
+			<DegradeOnBluntDamagePcnt>0.1</DegradeOnBluntDamagePcnt>
+			<DegradeOnSharpDamagePcnt>0.2</DegradeOnSharpDamagePcnt>
+			<DegradeOnVehicleImpactDamagePcnt>0.8</DegradeOnVehicleImpactDamagePcnt>
+			<DegradeOnFireDamagePcnt>0.6</DegradeOnFireDamagePcnt>
+			<DegradeOnTrapExplosionDamagePcnt>0.6</DegradeOnTrapExplosionDamagePcnt>
+			<DegradeOnZombieBiteDamagePcnt>0.2</DegradeOnZombieBiteDamagePcnt>
+		</ClothingSettings>
+	</ClothingTypes>
+</SISCD_ClothingTypeSettingsAddon>

@@ -1,0 +1,90 @@
+[h2]What is this?[/h2]
+This mod adds clothing durability and repair to the game. Your clothes can now break, degrading over time and depending on the damage that they receive. Clothing can be repaired using sewing kits that you will find around the world, or that you will craft. 
+
+The degradation depends on the type of damage someone takes, so melee attacks will have a lower degradation impact than gun fire,  explosions, molotovs, or vehicle impacts. You can also set backpacks to degrade over time if you want, and configure how fast a clothing degrades. 
+
+Running over characters with a vehicle, or burning them alive, will probably end up leaving them naked!
+
+[b]Can be added to current saves.[/b]
+
+[h2] Mod Support [/h2]
+This mod supports any clothing added by other mods, giving default configurations for items that aren't found in the settings file. For any modder adding clothing to the game, you can set the durability configuration of your clothing items by creating a file inside your mod folder. 
+
+Follow the example file that is provided with this mod. The file will have to be named [b]"SISCD_ClothingAddon.xml"[/b].
+
+[h3]Example[/h3]
+Let's put an example. If someone added a firefighter jacket to the game, they could make it so that it degrades slower over time, and is much more resistant to fire damage, so molotovs wouldn't break it as fast as they do other simpler clothing.
+
+[h2]Features[/h2]
+[list]
+[*] Adds durability to clothing, it can now break! Clothing degradation is affected by the type of damage characters receive. There's fire damage, blunt, sharp, explosion, vehicle impact.
+[*] Repair clothing on the run by using Sewing Kits.
+[*] Degradation over time. Clothing will degrade over time if they are worn by characters.
+[*] Degradation on melee attacks. Your clothing can also degrade when you attack.
+[*] Change the color of the durability bar.
+[*] Everything is configurable! Toggle things on/off and change durability attributes for clothing.
+[*] Supports any clothes added by mods.
+[/list]
+
+[h2]Settings[/h2]
+The settings file can be found inside the mod's folder under "Settings_ClothingDurability.xml".
+[list]
+[*] EnabledForPlayer. Whether clothing durability is enabled for the player. (default true)
+[*] EnabledForPlayerCommunity. Whether clothing durability is enabled for the player's community. (default true)
+[*] EnabledForNPCs. Whether clothing durability is enabled for the NPC's, zombies, other communities (default true)
+[*] ClothesSpawnWithLessDurability. Whether clothing spawns with less durability. (default true)
+[*] MinClothesDurabilityOnSpawnPcnt. The minimum percentage of durability that a clothing can spawn with. Between 0-1. (default 0.35)
+[*] MaxClothesDurabilityOnSpawnPcnt. The maximum percentage of durability that a clothing can spawn with. Vetween 0-1. (default 1.0)
+[*] ZombiesSpawnWithHeavilyDamagedClothing, Whether zombies spawn with much more damaged clothing. (default true)
+[*] CanBackpacksDegrade. Whether backpacks can degrade. (default true)
+[*] CanShoesDegrade. Whether shoes can degrade. (default true)
+[*] CanSunglassesDegrade. Whether sunglasses can degrade. (default true)
+[*] DurabilityDegradeRate. The degrade rate (speed) for every clothing. You should only edit this if you want to speed things up. (default 1.0)
+[*] DurabilityDegradeOverTimePcnt
+[*] ClothingDegradesOverTimeForPlayer. Whether clothing degrades over time for you. (default true)
+[*] ClothingDegradesOverTimeForPlayerCommunity. Whether clothing degrades over time for characters in the player community. (default true)
+[*] ClothingDegradesOverTimeForNPCs. Whether clothing degrades over time for NPC's. (default true)
+[*] ClothingDegradesOverTimeFrequency. The frequency for the clothing degradation over time. (default 100)
+[*] ClothingDegradesOnAttack. Whether clothing degrades when the character attacks. (default true)
+[*] ClothingDegradesOnDamaged. Whether clothing degrades when the character is damaged. (default true)[*] UseDurabilityDegradeOverTimePcnt. Whether to use the value set at "DurabilityDegradeoverTimePcnt" as global for all equipments. If not set to true, then all equipments use their own "DegradeOnTick" value. (default false)
+[*] ArmorProtectsFromDegradation. Whether armor (body or leg) protects clothing in their respective areas from degradation on damaged. (default true)
+[*] RepairClothingDurabilityIncreasePcnt. The durability percentage increase when repaired clothing. (default 0.5)
+[*] RepairClothingMaxDurabilityDecreasePcnt. The maximum durability percentage decrease when repaired a clothing. (default 0.2)
+[*] ShowStatusMsgOnClothingBroken. Whether to show a status message on top whenever your player's clothing breaks. (default true)
+[*] CharactersSpeakOnClothingBroken. Whether characters speak when their clothing breaks. (default true)
+[*] PlaySoundOnClothingBroken. Whether to play a sound on clothing broken. (default true)
+[*] ShowNotificationOnClothingBroken. Whether to show an equipment notification when a clothing breaks. (default true)
+[*] ClothingDurabilityBarColor. The color of the durability bar.
+[*] ClothingTypes. List of clothing settings.
+[/list]
+
+[h3]ClothingTypeSettings[/h3]
+These are the durability settings for any clothing item. You can see them in the configuration file.
+[list]
+[*] Name. Name of the clothing. This is the prototype name, which will be the name of the file of the clothing in the "Equipment" folder.
+[*] DegradeRate. The speed at which this clothing degrades. Default to 1.
+[*] MaxDurability. Maximum durability amount for this clothing.
+[*] MinPartsOnBroken. Minimum amount of cloth to spawn whenever this clothing breaks.
+[*] MaxPartsOnBroken. Maximum amount of cloth to spawn whenever this clothing breaks.
+[*] CanDegradeOnDamaged. Whether this clothing degrades when the character is hurt.
+[*] CanDegradeOnAttack. Whether this clothing degrades when the character attacks.
+[*] CanDegradeOverTime. Whether this clothing degrades over time.
+[*] DegradeOverTimePcnt. The degradation percentage over time. Only applied if "CanDegradeOverTime" is enabled. Between 0 and 1. (0.1 would mean 10%)
+[*] DegradeOnExplosionDamagePcnt. The damage percentage to the durability if explosion. Between 0-1, with 1 being 100% of the clothing's durability. (default 0.6)
+[*] DegradeOnBulletDamagePcnt. The damage percentage to the durability if bullet injury. Between 0-1. (default 0.35)
+[*] DegradeOnArrowDamagePcnt. The damage percentage to the durability if arrow injury. Between 0-1. (default 0.30)
+[*] DegradeOnBluntDamagePcnt. The damage percentage to the durability if blunt injury. Between 0-1. (default 0.15)
+[*] DegradeOnSharpDamagePcnt. The damage percentage to the durability if sharp injury. Between 0-1. (default 0.25)
+[*] DegradeOnVehicleImpactDamagePcnt. The damage percentage to the durability if vehicle impact. Between 0-1. (default 0.5)
+[*] DegradeOnFireDamagePcnt, The damage percentage to the durability if burning. Between 0-1. (default 0.6)
+[*] DegradeOnTrapExplosionDamagePcnt. The damage to the durability if explosion. Between 0-1. (default 0.6)
+[*] DegradeOnZombieBiteDamagePcnt. The damage to the durability if explosion. Between 0-1. (default 0.2)
+[/list]
+
+[h2]Notes[/h2]
+This mod changes a few things, and it could have a bug or two in it. Report any issues in the comments section!
+
+[b]Not sure how it behaves in co-op.[/b]
+
+[h2]Compatibility[/h2]
+At the moment I haven't found any incompatibilities, but its tough to say that there won't be any, it all depends on the mods you're playing with.

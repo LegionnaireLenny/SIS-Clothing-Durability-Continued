@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<RecipeList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Recipes>
+    <Recipe>
+      <UniqueID>SISLB_CraftSewingKit</UniqueID>
+      <NativeName>Craft Sewing Kit</NativeName>
+      <ShowRecipe>IfAllIngredientsFound</ShowRecipe>
+      <SkillType>Construction</SkillType>
+      <SkillLevel>0</SkillLevel>
+      <SkillProgression>1</SkillProgression>
+      <CraftingTime>5</CraftingTime>
+	  <ProductPrototypeName>SISCD_SewingKit</ProductPrototypeName>
+	  <ProductAmount>1</ProductAmount>
+      <Ingredients>
+        <Ingredient>
+          <PrototypeNames>
+            <string>Rag</string>
+          </PrototypeNames>
+          <Amount>4</Amount>
+        </Ingredient>
+      </Ingredients>
+    </Recipe>
+  </Recipes>
+</RecipeList>

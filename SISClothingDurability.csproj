@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9442D1AB-617F-416A-B924-6662F38B68B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SISClothingDurability</RootNamespace>
+    <AssemblyName>SISClothingDurability</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDir)\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(UnityResourceDir)\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(UnityResourceDir)\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>$(UnityResourceDir)\netstandard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(UnityResourceDir)\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>$(UnityResourceDir)\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(UnityResourceDir)\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(UnityResourceDir)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(UnityResourceDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Character_OnDamaged__Patch.cs" />
+    <Compile Include="Source\Character_OnMeleeAttack__Patch.cs" />
+    <Compile Include="Source\Character_RandomizeClothing__Patch.cs" />
+    <Compile Include="Source\Character_SimulateSurvivalFactors__Patch.cs" />
+    <Compile Include="Source\ClothingTypeSettings.cs" />
+    <Compile Include="Source\ClothingTypeSettingsDefaults.cs" />
+    <Compile Include="Source\EquipmentNotification_GetNewRecipeText.cs" />
+    <Compile Include="Source\EquipmentNotification_GetNewRecipeTitle.cs" />
+    <Compile Include="Source\Equipment_CanBeCombined__Patch.cs" />
+    <Compile Include="Source\Equipment_GetLiquidAmountBar__Patch.cs" />
+    <Compile Include="Source\Equipment_Spawn__Patch.cs" />
+    <Compile Include="Source\GameImpl_SetPrototypeLookupsFromStory__Patch.cs" />
+    <Compile Include="Source\Main.cs" />
+    <Compile Include="Source\Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Recipe_UseIngredientsAndCreateProduct__Patch.cs" />
+    <Compile Include="Source\SaveGameManager_Save__Patch.cs" />
+    <Compile Include="Source\Session_Load__Patch.cs" />
+    <Compile Include="Source\SISCD_CharacterUpdateInfo.cs" />
+    <Compile Include="Source\SISCD_ClothesDurabilityInfo.cs" />
+    <Compile Include="Source\SISCD_ClothingTypeSettingsAddon.cs" />
+    <Compile Include="Source\SISClothingDurability_Config.cs" />
+    <Compile Include="Source\SISClothingDurability_Manager.cs" />
+    <Compile Include="Source\SISClothingDurability_Settings.cs" />
+    <Compile Include="Source\SISClothingDurability_Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="SISClothingDurabilityContinued\CoverIcon.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Equipment\Icons\SISCD_HeavySewingKit.png" />
+    <Content Include="SISClothingDurabilityContinued\Equipment\Icons\SISCD_SewingKit.png" />
+    <Content Include="SISClothingDurabilityContinued\Equipment\SISCD_SewingKit.xml" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240527073619_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240527073624_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240527073630_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240527075728_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240527075819_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240527093913_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\20240605141040_1.jpg" />
+    <Content Include="SISClothingDurabilityContinued\Images\Cover.png" />
+    <Content Include="SISClothingDurabilityContinued\Recipes.xml" />
+    <Content Include="SISClothingDurabilityContinued\Scripts\ClothingBroken.xml" />
+    <Content Include="SISClothingDurabilityContinued\Settings.xml" />
+    <Content Include="SISClothingDurabilityContinued\Settings_ClothingDurability.xml" />
+    <Content Include="SISClothingDurabilityContinued\SISCD_ClothingAddon.xml" />
+    <Content Include="SISClothingDurabilityContinued\SISCLOTHINGDURABILITY.txt" />
+    <Content Include="SISClothingDurabilityContinued\Sounds\clothingbreaks_sound1.wav" />
+    <Content Include="SISClothingDurabilityContinued\Sounds\clothingbreaks_sound2.wav" />
+    <Content Include="SISClothingDurabilityContinued\SteamDescription.txt" />
+    <Content Include="SISClothingDurabilityContinued\Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Directory.Build.props" />
+    <None Include="README.md" />
+    <None Include="SISClothingDurabilityContinued\AssetBundles\clothingbreaks_sounds" />
+    <None Include="SISClothingDurabilityContinued\AssetBundles\clothingbreaks_sounds.manifest" />
+    <None Include="SISClothingDurabilityContinued\BrazilianPortuguese.tsv" />
+    <None Include="SISClothingDurabilityContinued\English.tsv" />
+    <None Include="SISClothingDurabilityContinued\French.tsv" />
+    <None Include="SISClothingDurabilityContinued\German.tsv" />
+    <None Include="SISClothingDurabilityContinued\Italian.tsv" />
+    <None Include="SISClothingDurabilityContinued\Japanese.tsv" />
+    <None Include="SISClothingDurabilityContinued\Korean.tsv" />
+    <None Include="SISClothingDurabilityContinued\LatinAmericanSpanish.tsv" />
+    <None Include="SISClothingDurabilityContinued\Russian.tsv" />
+    <None Include="SISClothingDurabilityContinued\SimplifiedChinese.tsv" />
+    <None Include="SISClothingDurabilityContinued\Spanish.tsv" />
+    <None Include="SISClothingDurabilityContinued\TraditionalChinese.tsv" />
+    <None Include="SISClothingDurabilityContinued\Turkish.tsv" />
+    <None Include="SISClothingDurabilityContinued\Ukrainian.tsv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SISClothingDurabilityContinued\DLLs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
