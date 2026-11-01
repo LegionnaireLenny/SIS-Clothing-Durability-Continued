@@ -2,11 +2,9 @@
 using HarmonyLib;
 using UnityEngine;
 
-// Token: 0x0200000A RID: 10
 [HarmonyPatch(typeof(Equipment), "GetLiquidAmountBar")]
 public class Equipment_GetLiquidAmountBar__Patch
 {
-	// Token: 0x06000017 RID: 23 RVA: 0x00002F98 File Offset: 0x00001198
 	private static void Postfix(ref bool __result, Equipment __instance, ref float amount, ref Color col)
 	{
 		bool flag = SISClothingDurability_Utils.IsPrototypeNormalClothing(__instance.GetPrototype());

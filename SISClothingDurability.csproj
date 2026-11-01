@@ -87,7 +87,6 @@
     <Compile Include="Source\Equipment_Spawn__Patch.cs" />
     <Compile Include="Source\GameImpl_SetPrototypeLookupsFromStory__Patch.cs" />
     <Compile Include="Source\Main.cs" />
-    <Compile Include="Source\Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Recipe_UseIngredientsAndCreateProduct__Patch.cs" />
     <Compile Include="Source\SaveGameManager_Save__Patch.cs" />
     <Compile Include="Source\Session_Load__Patch.cs" />

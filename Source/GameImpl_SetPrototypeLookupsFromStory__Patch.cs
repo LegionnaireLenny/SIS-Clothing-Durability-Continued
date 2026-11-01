@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using HarmonyLib;
 
-// Token: 0x0200000C RID: 12
 [HarmonyPatch(typeof(GameImpl), "SetPrototypeLookupsFromStory")]
 public class GameImpl_SetPrototypeLookupsFromStory__Patch
 {
-	// Token: 0x0600001B RID: 27 RVA: 0x00003114 File Offset: 0x00001314
 	private static void AddArmorWorkbenchRecipe(GameImpl __instance, EquipmentPrototype equip)
 	{
 		Recipe recipe = new Recipe();
@@ -15,10 +13,10 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
 		if (!flag)
 		{
 			recipe.NativeName = "Repair armor";
-			recipe.ShowRecipe = 1;
+			recipe.ShowRecipe = ShowRecipe.IfAllIngredientsFound;
 			recipe.CraftingStationType = "WorkBench";
-			recipe.RecipeType = 12;
-			recipe.SkillType = 5;
+			recipe.RecipeType = RecipeType.Workbench;
+			recipe.SkillType = SkillType.Construction;
 			recipe.SkillLevel = 2;
 			recipe.ProductAmount = 1;
 			recipe.IsDisassembly = false;
@@ -41,7 +39,6 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
 		}
 	}
 
-	// Token: 0x0600001C RID: 28 RVA: 0x00003264 File Offset: 0x00001464
 	private static void AddSewingKitRecipe(GameImpl __instance, EquipmentPrototype equip)
 	{
 		bool flag = __instance.CurrentRecipes == null;
@@ -53,8 +50,8 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
 			if (!flag2)
 			{
 				recipe.NativeName = "Repair clothing";
-				recipe.ShowRecipe = 1;
-				recipe.SkillType = 5;
+				recipe.ShowRecipe = ShowRecipe.IfAllIngredientsFound;
+				recipe.SkillType = SkillType.Construction;
 				recipe.SkillLevel = 0;
 				recipe.ProductAmount = 1;
 				recipe.IsDisassembly = false;
@@ -78,7 +75,6 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
 		}
 	}
 
-	// Token: 0x0600001D RID: 29 RVA: 0x000033A4 File Offset: 0x000015A4
 	private static void AddRepairRecipes(GameImpl __instance, Story story)
 	{
 		foreach (EquipmentPrototype equipmentPrototype in __instance.CurrentEquipmentPrototypes.Values)
@@ -91,7 +87,6 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
 		}
 	}
 
-	// Token: 0x0600001E RID: 30 RVA: 0x00003410 File Offset: 0x00001610
 	private static void Postfix(GameImpl __instance, Story story)
 	{
 		GameImpl_SetPrototypeLookupsFromStory__Patch.AddRepairRecipes(__instance, story);

@@ -1,11 +1,9 @@
 ﻿using System;
 using HarmonyLib;
 
-// Token: 0x0200000E RID: 14
 [HarmonyPatch(typeof(Recipe), "UseIngredientsAndCreateProduct")]
 public class Recipe_UseIngredientsAndCreateProduct__Patch
 {
-	// Token: 0x06000023 RID: 35 RVA: 0x00003470 File Offset: 0x00001670
 	private static Weapon FindWeaponOfPrototypeInInventory(Character carrier, EquipmentPrototype equipmentPrototype)
 	{
 		Equipment equipment = carrier.Inventory.FindItemOfType(equipmentPrototype);
@@ -22,7 +20,6 @@ public class Recipe_UseIngredientsAndCreateProduct__Patch
 		return weapon;
 	}
 
-	// Token: 0x06000024 RID: 36 RVA: 0x000034A4 File Offset: 0x000016A4
 	private static Equipment CreateProductReturningCreated(Recipe recipe, TileObject carrier, Community community, Equipment usingItem, TerrainCoord destTile, Prop.OrientationType orientation, float ingredientsNutrition, InfectionType ingredientsInfectedWith, out float numProduced, bool addToGatheredItems)
 	{
 		Character character = carrier as Character;
@@ -63,7 +60,6 @@ public class Recipe_UseIngredientsAndCreateProduct__Patch
 		return equipment3;
 	}
 
-	// Token: 0x06000025 RID: 37 RVA: 0x00003574 File Offset: 0x00001774
 	private static bool Prefix(ref float __result, Recipe __instance, Character carrier, Community community, Equipment usingItem, TerrainCoord destTile, Prop.OrientationType orientation, bool addToGatheredItems, bool checkEquipmentPolicy)
 	{
 		bool flag = __instance.UniqueID.StartsWith("SISCD_Repair");
@@ -100,7 +96,7 @@ public class Recipe_UseIngredientsAndCreateProduct__Patch
 						siscd_ClothesDurabilityInfo = SISClothingDurability_Manager.instance.GetClothesDurabilityInfo(usingItem);
 					}
 					SISClothingDurability_Manager.instance.RemoveEquipment(usingItem);
-					__instance.UseIngredients(carrier, usingItem, ref num2, ref infectionType, checkEquipmentPolicy);
+					__instance.UseIngredients(carrier, usingItem, out num2, out infectionType, checkEquipmentPolicy);
 					Equipment equipment = Recipe_UseIngredientsAndCreateProduct__Patch.CreateProductReturningCreated(__instance, carrier, community, usingItem, destTile, orientation, num2, infectionType, out num, addToGatheredItems);
 					SISClothingDurability_Config.Log("Clothing created : " + equipment.GetDisplayNameString() + ";" + equipment.Id.ToString());
 					float num3 = siscd_ClothesDurabilityInfo.Durability;

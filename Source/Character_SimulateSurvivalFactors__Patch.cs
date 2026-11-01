@@ -1,11 +1,9 @@
 ﻿using System;
 using HarmonyLib;
 
-// Token: 0x02000005 RID: 5
 [HarmonyPatch(typeof(Character), "SimulateSurvivalFactors")]
 public class Character_SimulateSurvivalFactors__Patch
 {
-	// Token: 0x0600000C RID: 12 RVA: 0x00002B54 File Offset: 0x00000D54
 	private static void Postfix(Character __instance, TimeSpan curTime, float dts)
 	{
 		bool flag = !SISClothingDurability_Config.EnabledForPlayer && __instance == Hud.Instance.LocalControlledCharacter;
@@ -51,7 +49,7 @@ public class Character_SimulateSurvivalFactors__Patch
 										bool flag8 = equipment != null && SISClothingDurability_Utils.IsPrototypeNormalClothing(equipment.GetPrototype()) && SISClothingDurability_Utils.CanClothingTypeDegrade(equipment.GetClothingType());
 										if (flag8)
 										{
-											bool flag9 = (!SISClothingDurability_Config.CanBackpacksDegrade && equipment.GetClothingType() == 5) || (!SISClothingDurability_Config.CanShoesDegrade && equipment.GetClothingType() == 4) || (!SISClothingDurability_Config.CanGlassesDegrade && equipment.GetClothingType() == 1);
+											bool flag9 = (!SISClothingDurability_Config.CanBackpacksDegrade && equipment.GetClothingType() == ClothingType.Backpack) || (!SISClothingDurability_Config.CanShoesDegrade && equipment.GetClothingType() == ClothingType.Shoes) || (!SISClothingDurability_Config.CanGlassesDegrade && equipment.GetClothingType() == ClothingType.Glasses);
 											if (!flag9)
 											{
 												ClothingTypeSettings clothingModifiersForEquipment = SISClothingDurability_Config.GetClothingModifiersForEquipment(equipment.GetPrototype().Name);
@@ -68,10 +66,7 @@ public class Character_SimulateSurvivalFactors__Patch
 												}
 											}
 										}
-										IL_02BF:
 										i++;
-										continue;
-										goto IL_02BF;
 									}
 									SISClothingDurability_Manager.instance.SetCharacterUpdateInfo(__instance, curTime, 0f);
 								}

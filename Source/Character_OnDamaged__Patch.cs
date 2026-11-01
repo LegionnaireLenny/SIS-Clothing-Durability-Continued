@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
-// Token: 0x02000003 RID: 3
 [HarmonyPatch(typeof(Character), "OnDamaged", new Type[]
 {
 	typeof(Character),
@@ -49,15 +48,14 @@ using UnityEngine;
 })]
 public class Character_OnDamaged__Patch
 {
-	// Token: 0x06000003 RID: 3 RVA: 0x00002180 File Offset: 0x00000380
 	private static Equipment GetEquipmentDamagedByInjuryLocation(Character character, InjuryLocation injuryLocation)
 	{
 		Equipment equipment = null;
 		switch (injuryLocation)
 		{
-		case 0:
-		case 2:
-		case 3:
+		case InjuryLocation.Torso:
+		case InjuryLocation.LeftArm:
+		case InjuryLocation.RightArm:
 		{
 			bool flag = character.Clothes[2] != null;
 			if (flag)
@@ -66,7 +64,7 @@ public class Character_OnDamaged__Patch
 			}
 			break;
 		}
-		case 1:
+		case InjuryLocation.Head:
 		{
 			bool flag2 = character.Clothes[0] != null;
 			if (flag2)
@@ -75,8 +73,8 @@ public class Character_OnDamaged__Patch
 			}
 			break;
 		}
-		case 4:
-		case 5:
+		case InjuryLocation.LeftLeg:
+		case InjuryLocation.RightLeg:
 		{
 			bool flag3 = character.Clothes[3] != null;
 			if (flag3)
@@ -89,15 +87,14 @@ public class Character_OnDamaged__Patch
 		return equipment;
 	}
 
-	// Token: 0x06000004 RID: 4 RVA: 0x00002214 File Offset: 0x00000414
 	private static List<Equipment> GetEquipmentsDamagedByInjuryLocation(Character character, InjuryLocation injuryLocation)
 	{
 		List<Equipment> list = new List<Equipment>();
 		switch (injuryLocation)
 		{
-		case 0:
-		case 2:
-		case 3:
+		case InjuryLocation.Torso:
+		case InjuryLocation.LeftArm:
+		case InjuryLocation.RightArm:
 		{
 			bool flag = character.Clothes[2] != null;
 			if (flag)
@@ -106,7 +103,7 @@ public class Character_OnDamaged__Patch
 			}
 			break;
 		}
-		case 1:
+		case InjuryLocation.Head:
 		{
 			bool flag2 = character.Clothes[0] != null;
 			if (flag2)
@@ -120,8 +117,8 @@ public class Character_OnDamaged__Patch
 			}
 			break;
 		}
-		case 4:
-		case 5:
+		case InjuryLocation.LeftLeg:
+		case InjuryLocation.RightLeg:
 		{
 			bool flag4 = character.Clothes[3] != null;
 			if (flag4)
@@ -139,7 +136,6 @@ public class Character_OnDamaged__Patch
 		return list;
 	}
 
-	// Token: 0x06000005 RID: 5 RVA: 0x00002300 File Offset: 0x00000500
 	private static void ApplyFireDamage(Character __instance, InjuryLocation injuryLocation)
 	{
 		SISClothingDurability_Config.Log("Injury is Fire, damaging all clothes");
@@ -152,10 +148,10 @@ public class Character_OnDamaged__Patch
 			bool flag = equipment != null && SISClothingDurability_Utils.IsPrototypeNormalClothing(equipment.GetPrototype()) && SISClothingDurability_Utils.CanClothingTypeDegrade(equipment.GetClothingType());
 			if (flag)
 			{
-				bool flag2 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == 2 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 6);
+				bool flag2 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == ClothingType.Top && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.BodyArmor);
 				if (!flag2)
 				{
-					bool flag3 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == 3 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 7);
+					bool flag3 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == ClothingType.Bottom && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.LegArmor);
 					if (!flag3)
 					{
 						bool flag4 = equipmentDamagedByInjuryLocation == null || equipment == equipmentDamagedByInjuryLocation;
@@ -174,14 +170,10 @@ public class Character_OnDamaged__Patch
 					}
 				}
 			}
-			IL_0134:
 			i++;
-			continue;
-			goto IL_0134;
 		}
 	}
 
-	// Token: 0x06000006 RID: 6 RVA: 0x00002450 File Offset: 0x00000650
 	private static void ApplyExplosionDamage(Character __instance, InjuryLocation injuryLocation)
 	{
 		Equipment equipmentDamagedByInjuryLocation = Character_OnDamaged__Patch.GetEquipmentDamagedByInjuryLocation(__instance, injuryLocation);
@@ -193,10 +185,10 @@ public class Character_OnDamaged__Patch
 			bool flag = equipment != null && SISClothingDurability_Utils.IsPrototypeNormalClothing(equipment.GetPrototype()) && SISClothingDurability_Utils.CanClothingTypeDegrade(equipment.GetClothingType());
 			if (flag)
 			{
-				bool flag2 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == 2 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 6);
+				bool flag2 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == ClothingType.Top && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.BodyArmor);
 				if (!flag2)
 				{
-					bool flag3 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == 3 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 7);
+					bool flag3 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == ClothingType.Bottom && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.LegArmor);
 					if (!flag3)
 					{
 						bool flag4 = equipmentDamagedByInjuryLocation == null || equipment == equipmentDamagedByInjuryLocation;
@@ -215,14 +207,10 @@ public class Character_OnDamaged__Patch
 					}
 				}
 			}
-			IL_0129:
 			i++;
-			continue;
-			goto IL_0129;
 		}
 	}
 
-	// Token: 0x06000007 RID: 7 RVA: 0x00002594 File Offset: 0x00000794
 	private static void ApplyVehicleImpactDamage(Character __instance, InjuryLocation injuryLocation)
 	{
 		Equipment equipmentDamagedByInjuryLocation = Character_OnDamaged__Patch.GetEquipmentDamagedByInjuryLocation(__instance, injuryLocation);
@@ -234,10 +222,10 @@ public class Character_OnDamaged__Patch
 			bool flag = equipment != null && SISClothingDurability_Utils.IsPrototypeNormalClothing(equipment.GetPrototype()) && SISClothingDurability_Utils.CanClothingTypeDegrade(equipment.GetClothingType());
 			if (flag)
 			{
-				bool flag2 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == 2 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 6);
+				bool flag2 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == ClothingType.Top && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.BodyArmor);
 				if (!flag2)
 				{
-					bool flag3 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == 3 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 7);
+					bool flag3 = SISClothingDurability_Config.ArmorProtectsFromDegradation && equipment.GetClothingType() == ClothingType.Bottom && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.LegArmor);
 					if (!flag3)
 					{
 						bool flag4 = equipmentDamagedByInjuryLocation == null || equipment == equipmentDamagedByInjuryLocation;
@@ -256,14 +244,10 @@ public class Character_OnDamaged__Patch
 					}
 				}
 			}
-			IL_0129:
 			i++;
-			continue;
-			goto IL_0129;
 		}
 	}
 
-	// Token: 0x06000008 RID: 8 RVA: 0x000026D8 File Offset: 0x000008D8
 	private static void Postfix(Character __instance, Character source, TileObject intendedTarget, ref InjuryType injuryType, InjuryLocation injuryLocation, InfectionType infectionType, EquipmentPrototype ammoType, SkillType skillType, ref float damage, float hitRadius, Vector3 nonDeterministicHitPos, Vector3 nonDeterministicHitForce, Bone bone, Vector3 posInBoneSpace, bool dontReact, bool assassinate, SecrecyMode secret, TargettableBodyLocation targetBodyLocation, float fuel, out bool absorbedByVest)
 	{
 		absorbedByVest = false;
@@ -295,7 +279,7 @@ public class Character_OnDamaged__Patch
 								";",
 								(source != null) ? source.GetDisplayNameString() : "NoSource"
 							}));
-							bool flag6 = injuryType == 4;
+							bool flag6 = injuryType == InjuryType.Fire;
 							if (flag6)
 							{
 								SISClothingDurability_Config.Log("Injury is Fire, damaging all clothes");
@@ -303,7 +287,7 @@ public class Character_OnDamaged__Patch
 							}
 							else
 							{
-								bool flag7 = injuryType == 3;
+								bool flag7 = injuryType == InjuryType.Explosion;
 								if (flag7)
 								{
 									SISClothingDurability_Config.Log("Injury is Explosion, damaging all clothes");
@@ -311,7 +295,7 @@ public class Character_OnDamaged__Patch
 								}
 								else
 								{
-									bool flag8 = injuryType == 9;
+									bool flag8 = injuryType == InjuryType.VehicleImpact;
 									if (flag8)
 									{
 										SISClothingDurability_Config.Log("Injury is Vehicle impact, damaging all clothes");
@@ -331,7 +315,7 @@ public class Character_OnDamaged__Patch
 												SISClothingDurability_Manager.instance.AddEquipment(equipmentDamagedByInjuryLocation, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
 											}
 											float num = 0f;
-											bool flag11 = source != null && source.EquippedItem == null && injuryType == 6;
+											bool flag11 = source != null && source.EquippedItem == null && injuryType == InjuryType.Punch;
 											if (flag11)
 											{
 												SISClothingDurability_Manager.instance.ReduceDurabilityByPercentage(equipmentDamagedByInjuryLocation, 0.05f * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
@@ -339,31 +323,31 @@ public class Character_OnDamaged__Patch
 											}
 											switch (injuryType)
 											{
-											case 0:
+											case InjuryType.Bullet:
 												num = clothingModifiersForEquipment.DegradeOnBulletDamagePcnt + clothingModifiersForEquipment.DegradeOnBulletDamagePcnt * damage * 2f;
 												break;
-											case 1:
+											case InjuryType.Arrow:
 												num = clothingModifiersForEquipment.DegradeOnArrowDamagePcnt + clothingModifiersForEquipment.DegradeOnArrowDamagePcnt * damage * 2f;
 												break;
-											case 2:
+											case InjuryType.ZombieBite:
 												num = clothingModifiersForEquipment.DegradeOnZombieBiteDamagePcnt;
 												break;
-											case 5:
+											case InjuryType.SharpObject:
 												num = clothingModifiersForEquipment.DegradeOnSharpDamagePcnt + clothingModifiersForEquipment.DegradeOnSharpDamagePcnt * damage * 2f;
 												break;
-											case 6:
+											case InjuryType.BluntObject:
 												num = clothingModifiersForEquipment.DegradeOnBluntDamagePcnt + clothingModifiersForEquipment.DegradeOnBluntDamagePcnt * damage * 2f;
 												break;
-											case 8:
+											case InjuryType.TrapExplosion:
 												num = clothingModifiersForEquipment.DegradeOnTrapExplosionDamagePcnt;
 												break;
 											}
 											SISClothingDurability_Manager.instance.ReduceDurabilityByPercentage(equipmentDamagedByInjuryLocation, num * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
 										}
-										bool flag12 = injuryLocation == 1 && SISClothingDurability_Utils.IsWearingClothingType(__instance, 1);
+										bool flag12 = injuryLocation == InjuryLocation.Head && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.Glasses);
 										if (!flag12)
 										{
-											bool flag13 = SISClothingDurability_Utils.IsInjuryLocationBottom(injuryLocation) && SISClothingDurability_Utils.IsWearingClothingType(__instance, 4);
+											bool flag13 = SISClothingDurability_Utils.IsInjuryLocationBottom(injuryLocation) && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.Shoes);
 											if (flag13)
 											{
 											}

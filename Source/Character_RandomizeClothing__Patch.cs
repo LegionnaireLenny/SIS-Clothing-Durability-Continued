@@ -1,7 +1,6 @@
 ﻿using System;
 using HarmonyLib;
 
-// Token: 0x02000002 RID: 2
 [HarmonyPatch(typeof(Character), "RandomizeClothing", new Type[]
 {
 	typeof(CustomRandom),
@@ -14,7 +13,6 @@ using HarmonyLib;
 })]
 public class Character_RandomizeClothing__Patch
 {
-	// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 	private static void Postfix(Human __instance, CustomRandom rand, bool seasonallyAppropriate, bool isPortrait, bool mustHaveBackpack, bool mustHaveBodyArmor, bool mustHaveHelmet, bool mustHaveLegArmor)
 	{
 		bool flag = __instance.Zombie && SISClothingDurability_Config.ZombiesSpawnWithHeavilyDamagedClothing;

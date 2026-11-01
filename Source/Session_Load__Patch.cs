@@ -1,11 +1,9 @@
 ﻿using System;
 using HarmonyLib;
 
-// Token: 0x02000010 RID: 16
 [HarmonyPatch(typeof(Session), "Load")]
 public class Session_Load__Patch
 {
-	// Token: 0x06000029 RID: 41 RVA: 0x000037EC File Offset: 0x000019EC
 	private static void Finalizer(Session __instance)
 	{
 		SISClothingDurability_Config.ReloadSettings();

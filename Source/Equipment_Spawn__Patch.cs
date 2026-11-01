@@ -1,7 +1,6 @@
 ﻿using System;
 using HarmonyLib;
 
-// Token: 0x0200000B RID: 11
 [HarmonyPatch(typeof(Equipment), "Spawn", new Type[]
 {
 	typeof(EquipmentPrototype),
@@ -9,7 +8,6 @@ using HarmonyLib;
 })]
 public class Equipment_Spawn__Patch
 {
-	// Token: 0x06000019 RID: 25 RVA: 0x00003030 File Offset: 0x00001230
 	private static void Postfix(Equipment __result, Equipment __instance, EquipmentPrototype prototype, int amount)
 	{
 		bool flag = __result == null;

@@ -1,7 +1,6 @@
 ﻿using System;
 using HarmonyLib;
 
-// Token: 0x02000004 RID: 4
 [HarmonyPatch(typeof(Character), "OnMeleeAttack", new Type[]
 {
 	typeof(Character),
@@ -14,13 +13,18 @@ using HarmonyLib;
 })]
 public class Character_OnMeleeAttack__Patch
 {
-	// Token: 0x0600000A RID: 10 RVA: 0x00002A38 File Offset: 0x00000C38
 	private static void Postfix(Character __instance, Character targetCharacter, AttackType attackType, InjuryType injuryType, Bone bone, float damage, bool assassinate, bool stealthy)
 	{
 		bool flag = !SISClothingDurability_Config.ClothingDegradesOnAttack;
 		if (!flag)
 		{
-			bool flag2 = attackType != 1 && attackType != 3 && attackType != 2 && attackType != 4 && attackType != 10 && attackType != 11 && attackType != 5;
+			bool flag2 = attackType != AttackType.Low &&
+				attackType != AttackType.High &&
+				attackType != AttackType.Middle &&
+				attackType != AttackType.Snap &&
+				attackType != AttackType.BludgeonUnconscious &&
+				attackType != AttackType.KillUnconscious &&
+				attackType != AttackType.AttackJumpingZombie;
 			if (!flag2)
 			{
 				Equipment[] clothes = __instance.Clothes;
@@ -44,10 +48,7 @@ public class Character_OnMeleeAttack__Patch
 							SISClothingDurability_Manager.instance.ReduceDurability(equipment, degradeOverTimePcnt * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
 						}
 					}
-					IL_0101:
 					i++;
-					continue;
-					goto IL_0101;
 				}
 			}
 		}
