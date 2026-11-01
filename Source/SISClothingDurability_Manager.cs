@@ -10,442 +10,434 @@ using UnityEngine;
 [Serializable]
 public class SISClothingDurability_Manager
 {
-	public SISClothingDurability_Manager()
-	{
-		SISClothingDurability_Manager.instance = this;
-		this.CharacterIdsTimeUpdate = new Dictionary<int, SISCD_CharacterUpdateInfo>();
-		this.equipments = new List<SISCD_ClothesDurabilityInfo>();
-		this.Equipments = new Dictionary<int, SISCD_ClothesDurabilityInfo>();
-	}
+    public SISClothingDurability_Manager()
+    {
+        SISClothingDurability_Manager.instance = this;
+        this.CharacterIdsTimeUpdate = new Dictionary<int, SISCD_CharacterUpdateInfo>();
+        this.equipments = new List<SISCD_ClothesDurabilityInfo>();
+        this.Equipments = new Dictionary<int, SISCD_ClothesDurabilityInfo>();
+    }
 
-	public void BuildDictionaryFromList()
-	{
-		this.Equipments.Clear();
-		foreach (SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo in this.equipments)
-		{
-			try
-			{
-				this.Equipments.Add(siscd_ClothesDurabilityInfo.Id, siscd_ClothesDurabilityInfo);
-			}
-			catch
-			{
-			}
-		}
-	}
+    public void BuildDictionaryFromList()
+    {
+        this.Equipments.Clear();
+        foreach (SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo in this.equipments)
+        {
+            try
+            {
+                this.Equipments.Add(siscd_ClothesDurabilityInfo.Id, siscd_ClothesDurabilityInfo);
+            }
+            catch
+            {
+            }
+        }
+    }
 
-	public void BuildListFromDictionary()
-	{
-		this.equipments.Clear();
-		foreach (SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo in this.Equipments.Values)
-		{
-			this.equipments.Add(siscd_ClothesDurabilityInfo);
-		}
-	}
+    public void BuildListFromDictionary()
+    {
+        this.equipments.Clear();
+        foreach (SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo in this.Equipments.Values)
+        {
+            this.equipments.Add(siscd_ClothesDurabilityInfo);
+        }
+    }
 
-	public TimeSpan GetCharacterUpdateTime(Character character)
-	{
-		SISCD_CharacterUpdateInfo siscd_CharacterUpdateInfo;
-		this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
-		bool flag = siscd_CharacterUpdateInfo != null;
-		TimeSpan timeSpan;
-		if (flag)
-		{
-			timeSpan = siscd_CharacterUpdateInfo.Time;
-		}
-		else
-		{
-			timeSpan = TimeSpan.Zero;
-		}
-		return timeSpan;
-	}
+    public TimeSpan GetCharacterUpdateTime(Character character)
+    {
+        SISCD_CharacterUpdateInfo siscd_CharacterUpdateInfo;
+        this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
+        bool flag = siscd_CharacterUpdateInfo != null;
+        TimeSpan timeSpan;
+        if (flag)
+        {
+            timeSpan = siscd_CharacterUpdateInfo.Time;
+        }
+        else
+        {
+            timeSpan = TimeSpan.Zero;
+        }
+        return timeSpan;
+    }
 
-	public void SetCharacterUpdateInfo(Character character, TimeSpan time, float dts = 0f)
-	{
-		bool flag = !this.CharacterIdsTimeUpdate.ContainsKey(character.Id);
-		if (flag)
-		{
-			this.CharacterIdsTimeUpdate.Add(character.Id, new SISCD_CharacterUpdateInfo(time, dts));
-		}
-		else
-		{
-			this.CharacterIdsTimeUpdate[character.Id].Time = time;
-			this.CharacterIdsTimeUpdate[character.Id].Dts = dts;
-		}
-	}
+    public void SetCharacterUpdateInfo(Character character, TimeSpan time, float dts = 0f)
+    {
+        bool flag = !this.CharacterIdsTimeUpdate.ContainsKey(character.Id);
+        if (flag)
+        {
+            this.CharacterIdsTimeUpdate.Add(character.Id, new SISCD_CharacterUpdateInfo(time, dts));
+        }
+        else
+        {
+            this.CharacterIdsTimeUpdate[character.Id].Time = time;
+            this.CharacterIdsTimeUpdate[character.Id].Dts = dts;
+        }
+    }
 
-	public bool AddEquipment(Equipment equip, float durability = 15f, float maxDurability = 15f)
-	{
-		bool flag = equip == null || durability < 0f || maxDurability < 0f;
-		bool flag2;
-		if (flag)
-		{
-			flag2 = false;
-		}
-		else
-		{
-			bool flag3 = durability > maxDurability;
-			if (flag3)
-			{
-				durability = maxDurability;
-			}
-			SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo = new SISCD_ClothesDurabilityInfo(equip.Id, durability, maxDurability);
-			this.Equipments.Add(equip.Id, siscd_ClothesDurabilityInfo);
-			SISClothingDurability_Config.Log(string.Concat(new string[]
-			{
-				"Added equipment with ID ",
-				equip.Id.ToString(),
-				" ",
-				equip.GetPrototype().Name,
-				";",
-				durability.ToString(),
-				";",
-				maxDurability.ToString()
-			}));
-			this.OnAddedEquipment(equip, siscd_ClothesDurabilityInfo);
-			flag2 = true;
-		}
-		return flag2;
-	}
+    public bool AddEquipment(Equipment equip, float durability = 15f, float maxDurability = 15f)
+    {
+        bool flag = equip == null || durability < 0f || maxDurability < 0f;
+        bool flag2;
+        if (flag)
+        {
+            flag2 = false;
+        }
+        else
+        {
+            bool flag3 = durability > maxDurability;
+            if (flag3)
+            {
+                durability = maxDurability;
+            }
+            SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo = new SISCD_ClothesDurabilityInfo(equip.Id, durability, maxDurability);
+            this.Equipments.Add(equip.Id, siscd_ClothesDurabilityInfo);
+            SISClothingDurability_Config.Log(string.Concat(new string[]
+            {
+                "Added equipment with ID ",
+                equip.Id.ToString(),
+                " ",
+                equip.GetPrototype().Name,
+                ";",
+                durability.ToString(),
+                ";",
+                maxDurability.ToString()
+            }));
+            this.OnAddedEquipment(equip, siscd_ClothesDurabilityInfo);
+            flag2 = true;
+        }
+        return flag2;
+    }
 
-	public bool AddEquipment(Equipment equip, float maxDurability)
-	{
-		return this.AddEquipment(equip, maxDurability, maxDurability);
-	}
+    public bool AddEquipment(Equipment equip, float maxDurability)
+    {
+        return this.AddEquipment(equip, maxDurability, maxDurability);
+    }
 
-	public bool IsEquipmentRegistered(Equipment equip)
-	{
-		return this.IsEquipmentRegistered(equip.Id);
-	}
+    public bool IsEquipmentRegistered(Equipment equip)
+    {
+        return this.IsEquipmentRegistered(equip.Id);
+    }
 
-	public SISCD_ClothesDurabilityInfo GetClothesDurabilityInfo(int id)
-	{
-		for (int i = 0; i < this.equipments.Count; i++)
-		{
-			bool flag = this.equipments[i].Id == id;
-			if (flag)
-			{
-				return this.equipments[i];
-			}
-		}
-		return null;
-	}
+    public SISCD_ClothesDurabilityInfo GetClothesDurabilityInfo(int id)
+    {
+        for (int i = 0; i < this.equipments.Count; i++)
+        {
+            bool flag = this.equipments[i].Id == id;
+            if (flag)
+            {
+                return this.equipments[i];
+            }
+        }
+        return null;
+    }
 
-	public SISCD_CharacterUpdateInfo GetCharacterUpdateInfo(Character character, TimeSpan time, float dts = 0f)
-	{
-		SISCD_CharacterUpdateInfo siscd_CharacterUpdateInfo;
-		this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
-		bool flag = siscd_CharacterUpdateInfo == null;
-		if (flag)
-		{
-			this.CharacterIdsTimeUpdate.Add(character.Id, new SISCD_CharacterUpdateInfo(time, dts));
-		}
-		return siscd_CharacterUpdateInfo;
-	}
+    public SISCD_CharacterUpdateInfo GetCharacterUpdateInfo(Character character, TimeSpan time, float dts = 0f)
+    {
+        SISCD_CharacterUpdateInfo siscd_CharacterUpdateInfo;
+        this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
+        bool flag = siscd_CharacterUpdateInfo == null;
+        if (flag)
+        {
+            this.CharacterIdsTimeUpdate.Add(character.Id, new SISCD_CharacterUpdateInfo(time, dts));
+        }
+        return siscd_CharacterUpdateInfo;
+    }
 
-	public SISCD_CharacterUpdateInfo GetCharacterUpdateInfo(Character character)
-	{
-		SISCD_CharacterUpdateInfo siscd_CharacterUpdateInfo;
-		this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
-		bool flag = siscd_CharacterUpdateInfo == null;
-		if (flag)
-		{
-			this.CharacterIdsTimeUpdate.Add(character.Id, new SISCD_CharacterUpdateInfo());
-			this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
-		}
-		return siscd_CharacterUpdateInfo;
-	}
+    public SISCD_CharacterUpdateInfo GetCharacterUpdateInfo(Character character)
+    {
+        SISCD_CharacterUpdateInfo siscd_CharacterUpdateInfo;
+        this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
+        bool flag = siscd_CharacterUpdateInfo == null;
+        if (flag)
+        {
+            this.CharacterIdsTimeUpdate.Add(character.Id, new SISCD_CharacterUpdateInfo());
+            this.CharacterIdsTimeUpdate.TryGetValue(character.Id, out siscd_CharacterUpdateInfo);
+        }
+        return siscd_CharacterUpdateInfo;
+    }
 
-	public SISCD_ClothesDurabilityInfo GetDefaultClothesDurabilityInfo(Equipment equip)
-	{
-		ClothingTypeSettings clothingModifiersForEquipment = SISClothingDurability_Config.GetClothingModifiersForEquipment(equip.GetPrototype().Name);
-		return new SISCD_ClothesDurabilityInfo(equip.Id, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
-	}
+    public SISCD_ClothesDurabilityInfo GetDefaultClothesDurabilityInfo(Equipment equip)
+    {
+        ClothingTypeSettings clothingModifiersForEquipment = SISClothingDurability_Config.GetClothingModifiersForEquipment(equip.GetPrototype().Name);
+        return new SISCD_ClothesDurabilityInfo(equip.Id, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
+    }
 
-	public SISCD_ClothesDurabilityInfo GetClothesDurabilityInfo(Equipment equip)
-	{
-		SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
-		this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
-		return siscd_ClothesDurabilityInfo;
-	}
+    public SISCD_ClothesDurabilityInfo GetClothesDurabilityInfo(Equipment equip)
+    {
+        SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
+        this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
+        return siscd_ClothesDurabilityInfo;
+    }
 
-	public void SetClothesDurabilityInfo(Equipment equip, SISCD_ClothesDurabilityInfo equipDur)
-	{
-		bool flag = this.Equipments.ContainsKey(equip.Id);
-		if (flag)
-		{
-			this.Equipments[equip.Id] = equipDur;
-		}
-	}
+    public void SetClothesDurabilityInfo(Equipment equip, SISCD_ClothesDurabilityInfo equipDur)
+    {
+        bool flag = this.Equipments.ContainsKey(equip.Id);
+        if (flag)
+        {
+            this.Equipments[equip.Id] = equipDur;
+        }
+    }
 
-	public float IncreaseDurability(Equipment equip, float amount = 1f)
-	{
-		bool flag = amount <= 0f || equip == null;
-		float num;
-		if (flag)
-		{
-			num = -1f;
-		}
-		else
-		{
-			float num2 = -1f;
-			SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
-			this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
-			bool flag2 = siscd_ClothesDurabilityInfo != null;
-			if (flag2)
-			{
-				num2 = Mathf.Min(siscd_ClothesDurabilityInfo.Durability + amount, siscd_ClothesDurabilityInfo.MaxDurability);
-				SISClothingDurability_Config.Log("Increased durability for " + equip.GetPrototype().Name + ", dur = " + num2.ToString());
-				this.Equipments[equip.Id].Durability = num2;
-			}
-			num = num2;
-		}
-		return num;
-	}
+    public float IncreaseDurability(Equipment equip, float amount = 1f)
+    {
+        bool flag = amount <= 0f || equip == null;
+        float num;
+        if (flag)
+        {
+            num = -1f;
+        }
+        else
+        {
+            float num2 = -1f;
+            SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
+            this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
+            bool flag2 = siscd_ClothesDurabilityInfo != null;
+            if (flag2)
+            {
+                num2 = Mathf.Min(siscd_ClothesDurabilityInfo.Durability + amount, siscd_ClothesDurabilityInfo.MaxDurability);
+                SISClothingDurability_Config.Log("Increased durability for " + equip.GetPrototype().Name + ", dur = " + num2.ToString());
+                this.Equipments[equip.Id].Durability = num2;
+            }
+            num = num2;
+        }
+        return num;
+    }
 
-	public float ReduceDurabilityByPercentage(Equipment equip, float pcnt)
-	{
-		float num = pcnt * this.GetMaxDurability(equip);
-		return this.ReduceDurability(equip, num);
-	}
+    public float ReduceDurabilityByPercentage(Equipment equip, float pcnt)
+    {
+        float num = pcnt * this.GetMaxDurability(equip);
+        return this.ReduceDurability(equip, num);
+    }
 
-	public float ReduceDurability(Equipment equip, float amount = 1f)
-	{
-		SISClothingDurability_Config.Log("Reducing durability for " + equip.GetPrototype().Name + ", amount = " + amount.ToString());
-		float num = -1f;
-		bool flag = amount <= 0f || equip == null;
-		float num2;
-		if (flag)
-		{
-			num2 = num;
-		}
-		else
-		{
-			SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
-			this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
-			bool flag2 = false;
-			bool flag3 = siscd_ClothesDurabilityInfo != null;
-			if (flag3)
-			{
-				bool isBroken = siscd_ClothesDurabilityInfo.IsBroken;
-				if (isBroken)
-				{
-					return siscd_ClothesDurabilityInfo.Durability;
-				}
-				num = Mathf.Max(siscd_ClothesDurabilityInfo.Durability - amount, 0f);
-				SISClothingDurability_Config.Log("Reduced durability for " + equip.GetPrototype().Name + ", dur = " + num.ToString());
-				this.Equipments[equip.Id].Durability = num;
-				bool flag4 = num == 0f;
-				if (flag4)
-				{
-					flag2 = true;
-				}
-			}
-			bool flag5 = flag2;
-			if (flag5)
-			{
-				this.Equipments[equip.Id].IsBroken = true;
-				bool flag6 = !equip.GetAsCharacter().Zombie && !equip.GetAsCharacter().IsSleepingOrUnconscious() && equip.GetAsCharacter().Alive;
-				if (flag6)
-				{
-					bool flag7 = equip.GetAsCharacter() == Hud.Instance.LocalControlledCharacter;
-					bool flag8 = flag7;
-					if (flag8)
-					{
-						bool showStatusMsgOnClothingBroken = SISClothingDurability_Config.ShowStatusMsgOnClothingBroken;
-						if (showStatusMsgOnClothingBroken)
-						{
-							try
-							{
-								string text = GameImpl.Translate(SISClothingDurability_Config.SpeechTranslateKey).Replace("%1", GameImpl.Translate(equip.GetPrototype().GetNameKey()));
-								HudBehaviour.Instance.SetStatusBarMsg(text);
-							}
-							catch
-							{
-							}
-						}
-						bool charactersSpeakOnClothingBroken = SISClothingDurability_Config.CharactersSpeakOnClothingBroken;
-						if (charactersSpeakOnClothingBroken)
-						{
-							try
-							{
-								Speech speech = GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId);
-								equip.GetAsCharacter().Speak(speech);
-							}
-							catch
-							{
-							}
-						}
-					}
-					else
-					{
-						bool flag9 = (equip.GetAsCharacter().IsOnPlayersTeam() && SISClothingDurability_Config.EnabledForPlayerCommunity) || (SISClothingDurability_Config.EnabledForNPCs && !equip.GetAsCharacter().IsControllableByPlayer());
-						if (flag9)
-						{
-							bool charactersSpeakOnClothingBroken2 = SISClothingDurability_Config.CharactersSpeakOnClothingBroken;
-							if (charactersSpeakOnClothingBroken2)
-							{
-								try
-								{
-									Speech speech2 = GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId);
-									equip.GetAsCharacter().Speak(speech2);
-								}
-								catch
-								{
-								}
-							}
-						}
-					}
-				}
-				bool playSoundOnClothingBroken = SISClothingDurability_Config.PlaySoundOnClothingBroken;
-				if (playSoundOnClothingBroken)
-				{
-					try
-					{
-						SoundManager.PlaySound3DFromList(SISClothingDurability_Config.SoundsClothingBroken, equip.GetAsCharacter().Pos);
-					}
-					catch
-					{
-					}
-				}
-				bool showNotificationOnClothingBroken = SISClothingDurability_Config.ShowNotificationOnClothingBroken;
-				if (showNotificationOnClothingBroken)
-				{
-					try
-					{
-						NotificationManager.Instance.AddEquipmentNotification(equip.GetAsCharacter(), equip.GetAsCharacter(), equip, 1);
-					}
-					catch
-					{
-					}
-				}
-				Character asCharacter = equip.GetAsCharacter();
-				this.RemoveEquipment(equip.Id);
-				asCharacter.Inventory.Remove(equip.GetAsCharacter(), equip);
-				EquipmentPrototype equipmentPrototype = GameImpl.Instance.FindEquipmentPrototypeByName("Rag");
-				bool flag10 = equipmentPrototype != null;
-				if (flag10)
-				{
-					int clothingMinPartsOnBroken = SISClothingDurability_Config.GetClothingMinPartsOnBroken(equip.GetPrototype().Name);
-					int clothingMaxPartsOnBroken = SISClothingDurability_Config.GetClothingMaxPartsOnBroken(equip.GetPrototype().Name);
-					int num3 = SISClothingDurability_Utils.NextBetweenInts(clothingMinPartsOnBroken, clothingMaxPartsOnBroken);
-					bool flag11 = num3 > 0;
-					if (flag11)
-					{
-						Equipment equipment = Equipment.Spawn(equipmentPrototype, num3);
-						asCharacter.Inventory.Add(asCharacter, equipment);
-					}
-				}
-				this.OnBrokenEquipment(equip);
-			}
-			else
-			{
-				this.OnReducedDurability(equip, num);
-			}
-			num2 = num;
-		}
-		return num2;
-	}
+    public float ReduceDurability(Equipment equip, float amount = 1f)
+    {
+        SISClothingDurability_Config.Log("Reducing durability for " + equip.GetPrototype().Name + ", amount = " + amount.ToString());
+        float num = -1f;
+        bool flag = amount <= 0f || equip == null;
+        float num2;
+        if (flag)
+        {
+            num2 = num;
+        }
+        else
+        {
+            SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
+            this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
+            bool flag2 = false;
+            bool flag3 = siscd_ClothesDurabilityInfo != null;
+            if (flag3)
+            {
+                bool isBroken = siscd_ClothesDurabilityInfo.IsBroken;
+                if (isBroken)
+                {
+                    return siscd_ClothesDurabilityInfo.Durability;
+                }
+                num = Mathf.Max(siscd_ClothesDurabilityInfo.Durability - amount, 0f);
+                SISClothingDurability_Config.Log("Reduced durability for " + equip.GetPrototype().Name + ", dur = " + num.ToString());
+                this.Equipments[equip.Id].Durability = num;
+                bool flag4 = num == 0f;
+                if (flag4)
+                {
+                    flag2 = true;
+                }
+            }
+            bool flag5 = flag2;
+            if (flag5)
+            {
+                this.Equipments[equip.Id].IsBroken = true;
+                bool flag6 = !equip.GetAsCharacter().Zombie && !equip.GetAsCharacter().IsSleepingOrUnconscious() && equip.GetAsCharacter().Alive;
+                if (flag6)
+                {
+                    bool flag7 = equip.GetAsCharacter() == Hud.Instance.LocalControlledCharacter;
+                    bool flag8 = flag7;
+                    if (flag8)
+                    {
+                        bool showStatusMsgOnClothingBroken = SISClothingDurability_Config.ShowStatusMsgOnClothingBroken;
+                        if (showStatusMsgOnClothingBroken)
+                        {
+                            try
+                            {
+                                string text = GameImpl.Translate(SISClothingDurability_Config.SpeechTranslateKey).Replace("%1", GameImpl.Translate(equip.GetPrototype().GetNameKey()));
+                                HudBehaviour.Instance.SetStatusBarMsg(text);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                        bool charactersSpeakOnClothingBroken = SISClothingDurability_Config.CharactersSpeakOnClothingBroken;
+                        if (charactersSpeakOnClothingBroken)
+                        {
+                            try
+                            {
+                                Speech speech = GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId);
+                                equip.GetAsCharacter().Speak(speech);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bool flag9 = (equip.GetAsCharacter().IsOnPlayersTeam() && SISClothingDurability_Config.EnabledForPlayerCommunity) || (SISClothingDurability_Config.EnabledForNPCs && !equip.GetAsCharacter().IsControllableByPlayer());
+                        if (flag9)
+                        {
+                            bool charactersSpeakOnClothingBroken2 = SISClothingDurability_Config.CharactersSpeakOnClothingBroken;
+                            if (charactersSpeakOnClothingBroken2)
+                            {
+                                try
+                                {
+                                    Speech speech2 = GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId);
+                                    equip.GetAsCharacter().Speak(speech2);
+                                }
+                                catch
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+                bool playSoundOnClothingBroken = SISClothingDurability_Config.PlaySoundOnClothingBroken;
+                if (playSoundOnClothingBroken)
+                {
+                    try
+                    {
+                        SoundManager.PlaySound3DFromList(SISClothingDurability_Config.SoundsClothingBroken, equip.GetAsCharacter().Pos);
+                    }
+                    catch
+                    {
+                    }
+                }
+                bool showNotificationOnClothingBroken = SISClothingDurability_Config.ShowNotificationOnClothingBroken;
+                if (showNotificationOnClothingBroken)
+                {
+                    try
+                    {
+                        NotificationManager.Instance.AddEquipmentNotification(equip.GetAsCharacter(), equip.GetAsCharacter(), equip, 1);
+                    }
+                    catch
+                    {
+                    }
+                }
+                Character asCharacter = equip.GetAsCharacter();
+                this.RemoveEquipment(equip.Id);
+                asCharacter.Inventory.Remove(equip.GetAsCharacter(), equip);
+                EquipmentPrototype equipmentPrototype = GameImpl.Instance.FindEquipmentPrototypeByName("Rag");
+                bool flag10 = equipmentPrototype != null;
+                if (flag10)
+                {
+                    int clothingMinPartsOnBroken = SISClothingDurability_Config.GetClothingMinPartsOnBroken(equip.GetPrototype().Name);
+                    int clothingMaxPartsOnBroken = SISClothingDurability_Config.GetClothingMaxPartsOnBroken(equip.GetPrototype().Name);
+                    int num3 = SISClothingDurability_Utils.NextBetweenInts(clothingMinPartsOnBroken, clothingMaxPartsOnBroken);
+                    bool flag11 = num3 > 0;
+                    if (flag11)
+                    {
+                        Equipment equipment = Equipment.Spawn(equipmentPrototype, num3);
+                        asCharacter.Inventory.Add(asCharacter, equipment);
+                    }
+                }
+                this.OnBrokenEquipment(equip);
+            }
+            else
+            {
+                this.OnReducedDurability(equip, num);
+            }
+            num2 = num;
+        }
+        return num2;
+    }
 
-	public bool RemoveEquipment(Equipment equip)
-	{
-		bool flag = equip != null;
-		bool flag3;
-		if (flag)
-		{
-			bool flag2 = this.RemoveEquipment(equip.Id);
-			this.OnRemovedEquipment(equip, flag2);
-			flag3 = flag2;
-		}
-		else
-		{
-			flag3 = false;
-		}
-		return flag3;
-	}
+    public bool RemoveEquipment(Equipment equip)
+    {
+        bool flag = equip != null;
+        bool flag3;
+        if (flag)
+        {
+            bool flag2 = this.RemoveEquipment(equip.Id);
+            this.OnRemovedEquipment(equip, flag2);
+            flag3 = flag2;
+        }
+        else
+        {
+            flag3 = false;
+        }
+        return flag3;
+    }
 
-	private bool RemoveEquipment(int id)
-	{
-		return this.Equipments.Remove(id);
-	}
+    private bool RemoveEquipment(int id)
+    {
+        return this.Equipments.Remove(id);
+    }
 
-	private bool IsEquipmentRegistered(int id)
-	{
-		return this.Equipments.ContainsKey(id);
-	}
+    private bool IsEquipmentRegistered(int id)
+    {
+        return this.Equipments.ContainsKey(id);
+    }
 
-	public float GetDurability(Equipment equip)
-	{
-		bool flag = equip == null;
-		float num;
-		if (flag)
-		{
-			num = 0f;
-		}
-		else
-		{
-			num = this.GetDurability(equip.Id);
-		}
-		return num;
-	}
+    public float GetDurability(Equipment equip)
+    {
+        bool flag = equip == null;
+        float num;
+        if (flag)
+        {
+            num = 0f;
+        }
+        else
+        {
+            num = this.GetDurability(equip.Id);
+        }
+        return num;
+    }
 
-	private float GetDurability(int id)
-	{
-		SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
-		this.Equipments.TryGetValue(id, out siscd_ClothesDurabilityInfo);
-		bool flag = siscd_ClothesDurabilityInfo != null;
-		float num;
-		if (flag)
-		{
-			num = siscd_ClothesDurabilityInfo.Durability;
-		}
-		else
-		{
-			num = -1f;
-		}
-		return num;
-	}
+    private float GetDurability(int id)
+    {
+        SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
+        this.Equipments.TryGetValue(id, out siscd_ClothesDurabilityInfo);
+        bool flag = siscd_ClothesDurabilityInfo != null;
+        float num;
+        if (flag)
+        {
+            num = siscd_ClothesDurabilityInfo.Durability;
+        }
+        else
+        {
+            num = -1f;
+        }
+        return num;
+    }
 
-	public float GetMaxDurability(Equipment equip)
-	{
-		bool flag = equip != null;
-		if (flag)
-		{
-			SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
-			this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
-			bool flag2 = siscd_ClothesDurabilityInfo != null;
-			if (flag2)
-			{
-				return siscd_ClothesDurabilityInfo.MaxDurability;
-			}
-		}
-		return SISClothingDurability_Config.GetMaxDurabilityForEquipment(equip.GetPrototype().Name);
-	}
+    public float GetMaxDurability(Equipment equip)
+    {
+        bool flag = equip != null;
+        if (flag)
+        {
+            SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
+            this.Equipments.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
+            bool flag2 = siscd_ClothesDurabilityInfo != null;
+            if (flag2)
+            {
+                return siscd_ClothesDurabilityInfo.MaxDurability;
+            }
+        }
+        return SISClothingDurability_Config.GetMaxDurabilityForEquipment(equip.GetPrototype().Name);
+    }
 
-	public void OnAddedEquipment(Equipment equipment, SISCD_ClothesDurabilityInfo equipmentDurability)
-	{
-	}
+    public void OnAddedEquipment(Equipment equipment, SISCD_ClothesDurabilityInfo equipmentDurability) { }
 
-	public void OnRemovedEquipment(Equipment equipment, bool success)
-	{
-	}
+    public void OnRemovedEquipment(Equipment equipment, bool success) { }
 
-	public void OnBrokenEquipment(Equipment equipment)
-	{
-	}
+    public void OnBrokenEquipment(Equipment equipment) { }
 
-	public void OnReducedDurability(Equipment equipment, float newDurability)
-	{
-	}
+    public void OnReducedDurability(Equipment equipment, float newDurability) { }
 
-	[XmlIgnore]
-	public static SISClothingDurability_Manager instance;
+    [XmlIgnore]
+    public static SISClothingDurability_Manager instance;
 
-	[XmlIgnore]
-	public Dictionary<int, SISCD_CharacterUpdateInfo> CharacterIdsTimeUpdate;
+    [XmlIgnore]
+    public Dictionary<int, SISCD_CharacterUpdateInfo> CharacterIdsTimeUpdate;
 
-	[XmlArray]
-	public List<SISCD_ClothesDurabilityInfo> equipments;
+    [XmlArray]
+    public List<SISCD_ClothesDurabilityInfo> equipments;
 
-	[XmlIgnore]
-	public Dictionary<int, SISCD_ClothesDurabilityInfo> Equipments;
+    [XmlIgnore]
+    public Dictionary<int, SISCD_ClothesDurabilityInfo> Equipments;
 }

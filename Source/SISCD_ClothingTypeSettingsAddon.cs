@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 [Serializable]
 public class SISCD_ClothingTypeSettingsAddon
 {
-	[XmlArray(ElementName = "ClothingTypes")]
-	[XmlArrayItem(ElementName = "ClothingSettings")]
-	public List<ClothingTypeSettings> ClothingTypes = new List<ClothingTypeSettings>();
+    [XmlArray(ElementName = "ClothingTypes")]
+    [XmlArrayItem(ElementName = "ClothingSettings")]
+    public List<ClothingTypeSettings> ClothingTypes = new List<ClothingTypeSettings>();
 }
