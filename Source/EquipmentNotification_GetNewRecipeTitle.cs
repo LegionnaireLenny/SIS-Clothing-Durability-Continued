@@ -5,17 +5,11 @@ public class EquipmentNotification_GetNewRecipeTitle
 {
     private static bool Prefix(ref string __result, EquipmentNotification __instance, Recipe recipe)
     {
-        bool flag = recipe == null;
-        bool flag2;
-        if (flag)
+        if (recipe == null)
         {
             __result = "";
-            flag2 = false;
+            return false;
         }
-        else
-        {
-            flag2 = true;
-        }
-        return flag2;
+        return true;
     }
 }

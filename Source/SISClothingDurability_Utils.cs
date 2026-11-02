@@ -1,10 +1,20 @@
 ﻿using System;
+using static SISClothingDurability_Config;
 
 public class SISClothingDurability_Utils
 {
+    public static void SetStatusBarMsgWithTimeout(string msg, float timeout)
+    {
+        HudBehaviour.Instance.StatusBarMsg = msg;
+        HudBehaviour.Instance.StatusBarMsgTimeout = timeout;
+        HudBehaviour.Instance.StatusBarMsgShowForOneFrame = false;
+        HudBehaviour.Instance.StatusBarMsgAction = default;
+    }
+
     public static bool IsInjuryLocationBottom(InjuryLocation location)
     {
-        return location == InjuryLocation.LeftLeg || location == InjuryLocation.RightLeg;
+        return location == InjuryLocation.LeftLeg ||
+            location == InjuryLocation.RightLeg;
     }
 
     public static bool IsInjuryLocationTop(InjuryLocation location)
@@ -19,24 +29,27 @@ public class SISClothingDurability_Utils
         return character.Clothes[(int)clothingType] != null;
     }
 
-    public static void SetStatusBarMsgWithTimeout(string msg, float timeout)
+    public static bool IsLocationProtected(Character character, Equipment equipment)
     {
-        HudBehaviour.Instance.StatusBarMsg = msg;
-        HudBehaviour.Instance.StatusBarMsgTimeout = timeout;
-        HudBehaviour.Instance.StatusBarMsgShowForOneFrame = false;
-        HudBehaviour.Instance.StatusBarMsgAction = default;
+        if (!ArmorProtectsFromDegradation)
+        {
+            return false;
+        }
+
+        return (equipment.GetClothingType() == ClothingType.Top && IsWearingClothingType(character, ClothingType.BodyArmor)) ||
+            (equipment.GetClothingType() == ClothingType.Bottom && IsWearingClothingType(character, ClothingType.LegArmor));
     }
 
-    public static bool IsPrototypeNormalClothing(EquipmentPrototype equip)
+    public static bool IsPrototypeDegradableClothing(EquipmentPrototype equip)
     {
-        return !IsPrototypeArmorClothing(equip) && (equip.ClothingType == ClothingType.Hat ||
-            (SISClothingDurability_Config.CanGlassesDegrade && equip.ClothingType == ClothingType.Glasses) ||
+        return equip.ClothingType == ClothingType.Hat ||
+            (CanGlassesDegrade && equip.ClothingType == ClothingType.Glasses) ||
             equip.ClothingType == ClothingType.Top ||
             equip.ClothingType == ClothingType.Bottom ||
-            (SISClothingDurability_Config.CanShoesDegrade && equip.ClothingType == ClothingType.Shoes) ||
-            (SISClothingDurability_Config.CanBackpacksDegrade && equip.ClothingType == ClothingType.Backpack) ||
+            (CanShoesDegrade && equip.ClothingType == ClothingType.Shoes) ||
+            (CanBackpacksDegrade && equip.ClothingType == ClothingType.Backpack) ||
             equip.TypeName == BaseObjectType.Beanie ||
-            equip.TypeName == BaseObjectType.Balaklava);
+            equip.TypeName == BaseObjectType.Balaklava;
     }
 
     public static bool IsPrototypeArmorClothing(EquipmentPrototype equip)
@@ -48,21 +61,18 @@ public class SISClothingDurability_Utils
 
     public static bool CanClothingTypeDegrade(ClothingType type)
     {
-        bool flag = (!SISClothingDurability_Config.CanBackpacksDegrade && type == ClothingType.Backpack) ||
-            (!SISClothingDurability_Config.CanShoesDegrade && type == ClothingType.Shoes) ||
-            (!SISClothingDurability_Config.CanGlassesDegrade && type == ClothingType.Glasses);
-        bool flag2;
-        if (flag)
+        if ((CanBackpacksDegrade && type == ClothingType.Backpack) ||
+            (CanShoesDegrade && type == ClothingType.Shoes) ||
+            (CanGlassesDegrade && type == ClothingType.Glasses))
         {
-            SISClothingDurability_Config.Log(type.ToString() + " CANT degrade");
-            flag2 = false;
+            Log($"{type} CAN degrade");
+            return true;
         }
         else
         {
-            SISClothingDurability_Config.Log(type.ToString() + " CAN degrade");
-            flag2 = true;
+            Log($"{type} CANT degrade");
+            return false;
         }
-        return flag2;
     }
 
     public static float NextFloat()
@@ -73,7 +83,7 @@ public class SISClothingDurability_Utils
 
     public static int NextBetweenInts(int min, int max)
     {
-        return SISClothingDurability_Utils.random.Next(min, max + 1);
+        return random.Next(min, max + 1);
     }
 
     private static Random random = new Random();

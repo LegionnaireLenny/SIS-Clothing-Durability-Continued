@@ -5,11 +5,11 @@ public class SaveGameManager_Save__Patch
 {
     private static void Finalizer(SaveRequest request)
     {
-        bool flag = request.SaveGame == null || SISClothingDurability_Config.LoadInProgress;
-        if (!flag)
+        if (request.SaveGame == null || SISClothingDurability_Config.LoadInProgress)
         {
-            SISClothingDurability_Config.OnSaveGame(GameImpl.Instance.SaveGamePath + "/" + request.SaveGame.DirName + "/");
-            SISClothingDurability_Config.SaveInProgress = false;
+            return;
         }
+        SISClothingDurability_Config.OnSaveGame(GameImpl.Instance.SaveGamePath + "/" + request.SaveGame.DirName + "/");
+        SISClothingDurability_Config.SaveInProgress = false;
     }
 }

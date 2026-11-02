@@ -5,8 +5,7 @@ public class Equipment_CanBeCombined__Patch
 {
     private static void Postfix(ref bool __result, Equipment __instance)
     {
-        bool flag = SISClothingDurability_Utils.IsPrototypeNormalClothing(__instance.GetPrototype());
-        if (flag)
+        if (SISClothingDurability_Utils.IsPrototypeDegradableClothing(__instance.GetPrototype()))
         {
             __result = false;
         }

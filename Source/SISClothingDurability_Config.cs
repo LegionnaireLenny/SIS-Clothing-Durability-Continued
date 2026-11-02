@@ -19,8 +19,7 @@ public class SISClothingDurability_Config
         {
             string text = story.Path + SISClothingDurability_Config.ModIdentifier;
             string text2 = story.Path + SISClothingDurability_Config.SettingsFilePath;
-            bool flag = File.Exists(text) || File.Exists(text2);
-            if (flag)
+            if (File.Exists(text) || File.Exists(text2))
             {
                 foreach (Resource<AudioClip> resource in story.Sounds)
                 {
@@ -53,8 +52,7 @@ public class SISClothingDurability_Config
             foreach (Story story in GameImpl.Instance.CurrentStories)
             {
                 string text = story.Path + SISClothingDurability_Config.SettingsFilePath;
-                bool flag2 = File.Exists(text);
-                if (flag2)
+                if (File.Exists(text))
                 {
                     flag = true;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Settings));
@@ -65,8 +63,8 @@ public class SISClothingDurability_Config
                     SISClothingDurability_Config.Log("Loaded settings from path " + text);
                 }
             }
-            bool flag3 = !flag;
-            if (flag3)
+
+            if (!flag)
             {
                 SISClothingDurability_Settings @default = SISClothingDurability_Settings.GetDefault();
                 SISClothingDurability_Config.FillSettings(@default);
@@ -75,8 +73,7 @@ public class SISClothingDurability_Config
                 foreach (Story story2 in GameImpl.Instance.CurrentStories)
                 {
                     string text2 = story2.Path + SISClothingDurability_Config.ModIdentifier;
-                    bool flag4 = File.Exists(text2);
-                    if (flag4)
+                    if (File.Exists(text2))
                     {
                         SISClothingDurability_Config.SaveSettings(SISClothingDurability_Settings.GetDefault(), story2.Path);
                         SISClothingDurability_Config.Log("Saved settings file at path " + story2.Path);
@@ -106,8 +103,7 @@ public class SISClothingDurability_Config
     {
         string text = folderPath + SISClothingDurability_Config.SettingsFilePath;
         SISClothingDurability_Config.Log("Saving to " + text);
-        bool flag = File.Exists(text);
-        if (flag)
+        if (File.Exists(text))
         {
             File.Delete(text);
         }
@@ -122,8 +118,7 @@ public class SISClothingDurability_Config
         foreach (Story story in GameImpl.Instance.CurrentStories)
         {
             string text = story.Path + SISClothingDurability_Config.ClothingTypeSettingsOtherMods;
-            bool flag = File.Exists(text);
-            if (flag)
+            if (File.Exists(text))
             {
                 SISClothingDurability_Config.Log("Found Addon at " + text);
                 try
@@ -156,8 +151,7 @@ public class SISClothingDurability_Config
 
     public static void Log(string msg)
     {
-        bool flag = !SISClothingDurability_Config.LoggingActive;
-        if (!flag)
+        if (SISClothingDurability_Config.LoggingActive)
         {
             try
             {
@@ -178,8 +172,7 @@ public class SISClothingDurability_Config
     private static void FillSettings(SISClothingDurability_Settings obj)
     {
         FileLog.logPath = SISClothingDurability_Config.GetStoryPath() + SISClothingDurability_Config.LogFilePath;
-        bool flag = File.Exists(FileLog.logPath);
-        if (flag)
+        if (File.Exists(FileLog.logPath))
         {
             File.Delete(FileLog.logPath);
         }
@@ -243,8 +236,7 @@ public class SISClothingDurability_Config
         {
             string text = story.Path + SISClothingDurability_Config.ModIdentifier;
             string text2 = story.Path + SISClothingDurability_Config.SettingsFilePath;
-            bool flag = File.Exists(text) || File.Exists(text2);
-            if (flag)
+            if (File.Exists(text) || File.Exists(text2))
             {
                 return story.Path;
             }
@@ -254,8 +246,7 @@ public class SISClothingDurability_Config
 
     public static float GetMaxDurabilityForEquipment(string name)
     {
-        bool flag = !string.IsNullOrEmpty(name);
-        if (flag)
+        if (!string.IsNullOrEmpty(name))
         {
             ClothingTypeSettings clothingTypeSettings;
             bool flag2 = SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings);
@@ -269,12 +260,10 @@ public class SISClothingDurability_Config
 
     public static ClothingTypeSettings GetClothingModifiersForEquipment(string name)
     {
-        bool flag = !string.IsNullOrEmpty(name);
-        if (flag)
+        if (!string.IsNullOrEmpty(name))
         {
             ClothingTypeSettings clothingTypeSettings;
-            bool flag2 = SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings);
-            if (flag2)
+            if (SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings))
             {
                 return clothingTypeSettings;
             }
@@ -284,12 +273,10 @@ public class SISClothingDurability_Config
 
     public static int GetClothingMaxPartsOnBroken(string name)
     {
-        bool flag = !string.IsNullOrEmpty(name);
-        if (flag)
+        if (!string.IsNullOrEmpty(name))
         {
             ClothingTypeSettings clothingTypeSettings;
-            bool flag2 = SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings);
-            if (flag2)
+            if (SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings))
             {
                 return clothingTypeSettings.MaxPartsOnBroken;
             }
@@ -299,12 +286,10 @@ public class SISClothingDurability_Config
 
     public static int GetClothingMinPartsOnBroken(string name)
     {
-        bool flag = !string.IsNullOrEmpty(name);
-        if (flag)
+        if (!string.IsNullOrEmpty(name))
         {
             ClothingTypeSettings clothingTypeSettings;
-            bool flag2 = SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings);
-            if (flag2)
+            if (SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings))
             {
                 return clothingTypeSettings.MinPartsOnBroken;
             }
@@ -314,15 +299,13 @@ public class SISClothingDurability_Config
 
     public static void OnSaveGame(string Path)
     {
-        bool flag = !SISClothingDurability_Config.SaveInProgress;
-        if (flag)
+        if (!SISClothingDurability_Config.SaveInProgress)
         {
             SISClothingDurability_Config.Log("SAVING");
             SISClothingDurability_Config.Log("Saving to " + Path);
             SISClothingDurability_Config.SaveInProgress = true;
             string text = Path + SISClothingDurability_Config.SaveFilePath;
-            bool flag2 = File.Exists(text);
-            if (flag2)
+            if (File.Exists(text))
             {
                 File.Delete(text);
             }
@@ -337,15 +320,13 @@ public class SISClothingDurability_Config
 
     public static bool OnLoadGame(string Path)
     {
-        bool flag = !SISClothingDurability_Config.LoadInProgress;
         bool flag3;
-        if (flag)
+        if (!SISClothingDurability_Config.LoadInProgress)
         {
             SISClothingDurability_Config.Log("LOADING");
             SISClothingDurability_Config.LoadInProgress = true;
             string text = Path + SISClothingDurability_Config.SaveFilePath;
-            bool flag2 = !File.Exists(text);
-            if (flag2)
+            if (!File.Exists(text))
             {
                 flag3 = false;
             }

@@ -8,12 +8,10 @@ public class Session_Load__Patch
         SISClothingDurability_Config.ReloadSettings();
         SISClothingDurability_Config.Log("Loaded!");
         object value = AccessTools.Field(typeof(GameImpl), "LoadingSessionInfo").GetValue(GameImpl.Instance);
-        bool flag = value != null && !SISClothingDurability_Config.SaveInProgress;
-        if (flag)
+        if (value != null && !SISClothingDurability_Config.SaveInProgress)
         {
             SaveGame saveGame = (SaveGame)AccessTools.Field(AccessTools.TypeByName("LoadSessionInfo"), "SaveGame").GetValue(value);
-            bool flag2 = saveGame != null;
-            if (flag2)
+            if (saveGame != null)
             {
                 SISClothingDurability_Config.OnLoadGame(GameImpl.Instance.SaveGamePath + "/" + saveGame.DirName + "/");
                 SISClothingDurability_Config.LoadInProgress = false;

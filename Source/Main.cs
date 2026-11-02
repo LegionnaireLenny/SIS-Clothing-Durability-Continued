@@ -12,14 +12,12 @@ public class Main
 
     public static void Unload()
     {
-        bool flag = Main.HarmonyInstance != null;
-        if (flag)
+        if (Main.HarmonyInstance != null)
         {
             Main.HarmonyInstance.UnpatchAll(null);
         }
     }
 
     public static Harmony HarmonyInstance;
-
     public static SISClothingDurability_Manager SISCDManager;
 }

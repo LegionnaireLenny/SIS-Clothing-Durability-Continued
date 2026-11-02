@@ -14,6 +14,5 @@ public class SISCD_CharacterUpdateInfo
     }
 
     public TimeSpan Time;
-
     public float Dts;
 }
