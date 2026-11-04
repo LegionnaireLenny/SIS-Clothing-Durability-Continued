@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SISClothingDurability_Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <LoggingEnabled>true</LoggingEnabled>
+  <LoggingEnabled>false</LoggingEnabled>
   <EnabledForPlayer>true</EnabledForPlayer>
   <EnabledForPlayerCommunity>true</EnabledForPlayerCommunity>
   <EnabledForNPCs>true</EnabledForNPCs>
