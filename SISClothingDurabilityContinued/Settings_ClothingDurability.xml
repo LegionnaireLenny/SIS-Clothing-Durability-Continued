@@ -1,28 +1,28 @@
 <?xml version="1.0"?>
 <SISClothingDurability_Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <LoggingActive>false</LoggingActive>
+  <LoggingEnabled>true</LoggingEnabled>
   <EnabledForPlayer>true</EnabledForPlayer>
   <EnabledForPlayerCommunity>true</EnabledForPlayerCommunity>
   <EnabledForNPCs>true</EnabledForNPCs>
-  <ClothesSpawnWithLessDurability>true</ClothesSpawnWithLessDurability>
-  <MinClothesDurabilityOnSpawnPcnt>0.35</MinClothesDurabilityOnSpawnPcnt>
-  <MaxClothesDurabilityOnSpawnPcnt>1</MaxClothesDurabilityOnSpawnPcnt>
-  <ZombiesSpawnWithHeavilyDamagedClothing>false</ZombiesSpawnWithHeavilyDamagedClothing>
+  <CanGlassesDegrade>true</CanGlassesDegrade>
   <CanBackpacksDegrade>true</CanBackpacksDegrade>
   <CanShoesDegrade>true</CanShoesDegrade>
-  <CanGlassesDegrade>true</CanGlassesDegrade>
+  <ClothingDegradesOnAttack>true</ClothingDegradesOnAttack>
+  <ClothingDegradesOnDamaged>true</ClothingDegradesOnDamaged>
+  <ArmorProtectsFromDegradation>true</ArmorProtectsFromDegradation>
+  <ZombiesSpawnWithHeavilyDamagedClothing>false</ZombiesSpawnWithHeavilyDamagedClothing>
+  <ClothesSpawnWithLessDurability>true</ClothesSpawnWithLessDurability>
+  <MinClothesDurabilityOnSpawnPercent>0.35</MinClothesDurabilityOnSpawnPercent>
+  <MaxClothesDurabilityOnSpawnPercent>1</MaxClothesDurabilityOnSpawnPercent>
   <DurabilityDegradeRate>1</DurabilityDegradeRate>
-  <DurabilityDegradeOverTimePcnt>0.01</DurabilityDegradeOverTimePcnt>
-  <UseDurabilityDegradeOverTimePcnt>false</UseDurabilityDegradeOverTimePcnt>
   <ClothingDegradesOverTimeForPlayer>true</ClothingDegradesOverTimeForPlayer>
   <ClothingDegradesOverTimeForPlayerCommunity>true</ClothingDegradesOverTimeForPlayerCommunity>
   <ClothingDegradesOverTimeForNPCs>false</ClothingDegradesOverTimeForNPCs>
   <ClothingDegradesOverTimeFrequency>100</ClothingDegradesOverTimeFrequency>
-  <ClothingDegradesOnAttack>true</ClothingDegradesOnAttack>
-  <ClothingDegradesOnDamaged>true</ClothingDegradesOnDamaged>
-  <ArmorProtectsFromDegradation>true</ArmorProtectsFromDegradation>
-  <RepairClothingDurabilityIncreasePcnt>0.5</RepairClothingDurabilityIncreasePcnt>
-  <RepairClothingMaxDurabilityDecreasePcnt>0.2</RepairClothingMaxDurabilityDecreasePcnt>
+  <UseDurabilityDegradeOverTimePercent>false</UseDurabilityDegradeOverTimePercent>
+  <DurabilityDegradeOverTimePercent>0.01</DurabilityDegradeOverTimePercent>
+  <RepairClothingDurabilityIncreasePercent>0.5</RepairClothingDurabilityIncreasePercent>
+  <RepairClothingMaxDurabilityDecreasePercent>0.2</RepairClothingMaxDurabilityDecreasePercent>
   <ShowStatusMsgOnClothingBroken>true</ShowStatusMsgOnClothingBroken>
   <CharactersSpeakOnClothingBroken>true</CharactersSpeakOnClothingBroken>
   <PlaySoundOnClothingBroken>true</PlaySoundOnClothingBroken>
