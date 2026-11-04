@@ -9,9 +9,11 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
         string uniqueID = SISClothingDurability_Config.RepairArmorClothingRecipeUniqueId + "_" + equip.Name;
         if (__instance.CurrentRecipes == null || __instance.CurrentRecipes.ContainsKey(uniqueID))
         {
+            //SISClothingDurability_Config.Log($"Duplicate recipe found: {equip.Name}");
             return;
         }
 
+        //SISClothingDurability_Config.Log($"Degradable armor found, adding recipe: {equip.Name}");
         Recipe recipe = new Recipe
         {
             UniqueID = uniqueID,
@@ -36,7 +38,7 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
         Ingredient ingredient2 = new Ingredient();
         ingredient2.PrototypeNames = new List<string>();
         ingredient2.Amount = 2;
-        ingredient2.PrototypeNames.Add("SISCD_HeavySewingKit");
+        ingredient2.PrototypeNames.Add(SISClothingDurability_Config.HeavySewingKitNameKey);
 
         recipe.Ingredients.Add(ingredient);
         recipe.Ingredients.Add(ingredient2);
@@ -44,14 +46,16 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
         __instance.CurrentRecipes.Add(recipe.UniqueID, recipe);
     }
 
-    private static void AddSewingKitRecipe(GameImpl __instance, EquipmentPrototype equip)
+    private static void AddSewingKitRecipe(GameImpl __instance, Story story, EquipmentPrototype equip)
     {
         string uniqueID = SISClothingDurability_Config.RepairNormalClothingRecipeUniqueId + "_" + equip.Name;
         if (__instance.CurrentRecipes == null || __instance.CurrentRecipes.ContainsKey(uniqueID))
         {
+            //SISClothingDurability_Config.Log($"Duplicate recipe found: {equip.Name}");
             return;
         }
 
+        //SISClothingDurability_Config.Log($"Degradable clothing found, adding recipe: {equip.Name}");
         Recipe recipe = new Recipe
         {
             UniqueID = uniqueID,
@@ -64,38 +68,43 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
             ProductPrototypeName = equip.Name,
             SkillProgression = 1,
             CraftingTime = 2f,
-            NameHash = StringUtil.JenkinsHash(SISClothingDurability_Config.RepairNormalClothingRecipeNameKey)
+            NameHash = StringUtil.JenkinsHash(SISClothingDurability_Config.RepairNormalClothingRecipeNameKey),
+            Ingredients = new List<Ingredient>
+            {
+                new Ingredient
+                {
+                    PrototypeNames = new List<string>
+                    {
+                        SISClothingDurability_Config.SewingKitNameKey
+                    },
+                    Amount = 1
+                },
+                new Ingredient
+                {
+                    PrototypeNames = new List<string>
+                    {
+                        equip.Name
+                    },
+                    Amount = 1,
+                    Interchangeable = false
+                }
+            }
         };
 
-        Ingredient ingredient = new Ingredient();
-        ingredient.PrototypeNames = new List<string>();
-        ingredient.PrototypeNames.Add("SISCD_SewingKit");
-        ingredient.Amount = 1;
-
-        Ingredient ingredient2 = new Ingredient();
-        ingredient2.PrototypeNames = new List<string>();
-        ingredient2.Amount = 1;
-        ingredient2.PrototypeNames.Add(equip.Name);
-        ingredient2.Interchangeable = false;
-
-        recipe.Ingredients.Add(ingredient);
-        recipe.Ingredients.Add(ingredient2);
+        story.Recipes.Add(recipe.UniqueID, recipe);
         __instance.CurrentRecipes.Add(recipe.UniqueID, recipe);
-    }
-
-    private static void AddRepairRecipes(GameImpl __instance, Story story)
-    {
-        foreach (EquipmentPrototype equipmentPrototype in __instance.CurrentEquipmentPrototypes.Values)
-        {
-            if (SISClothingDurability_Utils.IsPrototypeDegradableClothing(equipmentPrototype))
-            {
-                GameImpl_SetPrototypeLookupsFromStory__Patch.AddSewingKitRecipe(__instance, equipmentPrototype);
-            }
-        }
     }
 
     private static void Postfix(GameImpl __instance, Story story)
     {
-        GameImpl_SetPrototypeLookupsFromStory__Patch.AddRepairRecipes(__instance, story);
+        //SISClothingDurability_Config.Log($"Postfix - SetPrototypeLookupsFromStory - Searching equipment");
+        foreach (EquipmentPrototype equipmentPrototype in __instance.CurrentEquipmentPrototypes.Values)
+        {
+            //SISClothingDurability_Config.Log($"Current equipment: {equipmentPrototype.Name}");
+            if (SISClothingDurability_Utils.IsPrototypeDegradableClothing(equipmentPrototype))
+            {
+                GameImpl_SetPrototypeLookupsFromStory__Patch.AddSewingKitRecipe(__instance, story, equipmentPrototype);
+            }
+        }
     }
 }

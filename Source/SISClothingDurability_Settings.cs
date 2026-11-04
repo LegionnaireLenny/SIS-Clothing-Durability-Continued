@@ -56,33 +56,40 @@ public class SISClothingDurability_Settings
         };
     }
 
-    public bool LoggingActive = false;
+    public bool LoggingEnabled = false;
     public bool EnabledForPlayer = true;
     public bool EnabledForPlayerCommunity = true;
     public bool EnabledForNPCs = true;
-    public bool ClothesSpawnWithLessDurability = true;
-    public float MinClothesDurabilityOnSpawnPcnt = 0.35f;
-    public float MaxClothesDurabilityOnSpawnPcnt = 1f;
-    public bool ZombiesSpawnWithHeavilyDamagedClothing = false;
+    public bool CanGlassesDegrade = true;
     public bool CanBackpacksDegrade = true;
     public bool CanShoesDegrade = true;
-    public bool CanGlassesDegrade = true;
+
+    public bool ClothingDegradesOnAttack = true;
+    public bool ClothingDegradesOnDamaged = true;
+    public bool ArmorProtectsFromDegradation = true;
+
+    public bool ZombiesSpawnWithHeavilyDamagedClothing = false;
+    public bool ClothesSpawnWithLessDurability = true;
+    public float MinClothesDurabilityOnSpawnPercent = 0.35f;
+    public float MaxClothesDurabilityOnSpawnPercent = 1f;
+
     public float DurabilityDegradeRate = 1f;
-    public float DurabilityDegradeOverTimePcnt = 0.01f;
-    public bool UseDurabilityDegradeOverTimePcnt = false;
+
     public bool ClothingDegradesOverTimeForPlayer = true;
     public bool ClothingDegradesOverTimeForPlayerCommunity = true;
     public bool ClothingDegradesOverTimeForNPCs = false;
     public float ClothingDegradesOverTimeFrequency = 100f;
-    public bool ClothingDegradesOnAttack = true;
-    public bool ClothingDegradesOnDamaged = true;
-    public bool ArmorProtectsFromDegradation = true;
-    public float RepairClothingDurabilityIncreasePcnt = 0.5f;
-    public float RepairClothingMaxDurabilityDecreasePcnt = 0.2f;
+    public bool UseDurabilityDegradeOverTimePercent = false;
+    public float DurabilityDegradeOverTimePercent = 0.01f;
+
+    public float RepairClothingDurabilityIncreasePercent = 0.5f;
+    public float RepairClothingMaxDurabilityDecreasePercent = 0.2f;
+
     public bool ShowStatusMsgOnClothingBroken = true;
     public bool CharactersSpeakOnClothingBroken = true;
     public bool PlaySoundOnClothingBroken = true;
     public bool ShowNotificationOnClothingBroken = true;
+
     public Color32 ClothingDurabilityBarColor = LiquidPrototype.Urine.Col;
     
     [XmlArray(ElementName = "ClothingTypes")]

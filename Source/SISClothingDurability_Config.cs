@@ -10,233 +10,34 @@ public class SISClothingDurability_Config
 {
     public SISClothingDurability_Config()
     {
-        SISClothingDurability_Config.instance = this;
+        SISClothingDurability_Config.Instance = this;
     }
 
-    private static void GetAndAddSounds()
+    public static void Initialize()
+    {
+        StoryPath = GetStoryPath();
+        SettingsFilePath = StoryPath + SettingsFilename;
+        ClothingTypeSettingsOtherModsFilePath = StoryPath + ClothingTypeSettingsOtherModsFilename;
+        ModIdentifierFilePath = StoryPath + ModIdentifierFilename;
+        LogFilePath = StoryPath + LogFilename;
+
+        if (File.Exists(LogFilePath))
+        {
+            string previous = StoryPath + LogFilename.Insert(LogFilename.IndexOf("."), ".previous");
+            if (File.Exists(previous))
+            {
+                File.Delete(previous);
+            }
+            File.Move(LogFilePath, previous);
+        }
+    }
+
+    public static string GetStoryPath()
     {
         foreach (Story story in GameImpl.Instance.CurrentStories)
         {
-            string text = story.Path + SISClothingDurability_Config.ModIdentifier;
-            string text2 = story.Path + SISClothingDurability_Config.SettingsFilePath;
-            if (File.Exists(text) || File.Exists(text2))
-            {
-                foreach (Resource<AudioClip> resource in story.Sounds)
-                {
-                    SISClothingDurability_Config.Log("Added sound " + resource.GetPath());
-                    SISClothingDurability_Config.SoundsClothingBroken.Add(resource);
-                }
-            }
-        }
-    }
-
-    public static void ResetSettings()
-    {
-        SISClothingDurability_Config.IsConfigLoaded = false;
-        SISClothingDurability_Config.FillSettings(SISClothingDurability_Settings.GetDefault());
-        SISClothingDurability_Config.IsConfigLoaded = true;
-    }
-
-    public static void ClearSettings()
-    {
-        SISClothingDurability_Config.IsConfigLoaded = false;
-        SISClothingDurability_Config.FillSettings(SISClothingDurability_Settings.GetDefault());
-        SISClothingDurability_Config.clothesTypes.Clear();
-    }
-
-    public static void LoadSettings()
-    {
-        try
-        {
-            bool flag = false;
-            foreach (Story story in GameImpl.Instance.CurrentStories)
-            {
-                string text = story.Path + SISClothingDurability_Config.SettingsFilePath;
-                if (File.Exists(text))
-                {
-                    flag = true;
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Settings));
-                    FileStream fileStream = new FileStream(text, FileMode.Open);
-                    SISClothingDurability_Settings sisclothingDurability_Settings = (SISClothingDurability_Settings)xmlSerializer.Deserialize(fileStream);
-                    fileStream.Dispose();
-                    SISClothingDurability_Config.FillSettings(sisclothingDurability_Settings);
-                    SISClothingDurability_Config.Log("Loaded settings from path " + text);
-                }
-            }
-
-            if (!flag)
-            {
-                SISClothingDurability_Settings @default = SISClothingDurability_Settings.GetDefault();
-                SISClothingDurability_Config.FillSettings(@default);
-                SISClothingDurability_Config.Log("Loaded default settings since no settings file was found");
-                SISClothingDurability_Config.Log(JsonConvert.SerializeObject(@default));
-                foreach (Story story2 in GameImpl.Instance.CurrentStories)
-                {
-                    string text2 = story2.Path + SISClothingDurability_Config.ModIdentifier;
-                    if (File.Exists(text2))
-                    {
-                        SISClothingDurability_Config.SaveSettings(SISClothingDurability_Settings.GetDefault(), story2.Path);
-                        SISClothingDurability_Config.Log("Saved settings file at path " + story2.Path);
-                    }
-                }
-            }
-            try
-            {
-                SISClothingDurability_Config.LoadClothingTypeSettingsFromOtherMods();
-            }
-            catch (Exception ex)
-            {
-                SISClothingDurability_Config.Log("Error loading Weapon Type Addons from other mods: " + ex.Message);
-            }
-        }
-        catch (Exception ex2)
-        {
-            SISClothingDurability_Config.Log(ex2.ToString());
-            SISClothingDurability_Config.Log("Error loading settings");
-            SISClothingDurability_Config.FillSettings(SISClothingDurability_Settings.GetDefault());
-            throw new Exception("Error loading SISCD settings: " + ex2.Message);
-        }
-        SISClothingDurability_Config.IsConfigLoaded = true;
-    }
-
-    private static void SaveSettings(SISClothingDurability_Settings settings, string folderPath)
-    {
-        string text = folderPath + SISClothingDurability_Config.SettingsFilePath;
-        SISClothingDurability_Config.Log("Saving to " + text);
-        if (File.Exists(text))
-        {
-            File.Delete(text);
-        }
-        XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Settings));
-        FileStream fileStream = File.Create(text);
-        xmlSerializer.Serialize(fileStream, settings);
-        fileStream.Dispose();
-    }
-
-    public static void LoadClothingTypeSettingsFromOtherMods()
-    {
-        foreach (Story story in GameImpl.Instance.CurrentStories)
-        {
-            string text = story.Path + SISClothingDurability_Config.ClothingTypeSettingsOtherMods;
-            if (File.Exists(text))
-            {
-                SISClothingDurability_Config.Log("Found Addon at " + text);
-                try
-                {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISCD_ClothingTypeSettingsAddon));
-                    FileStream fileStream = new FileStream(text, FileMode.Open);
-                    SISCD_ClothingTypeSettingsAddon siscd_ClothingTypeSettingsAddon = (SISCD_ClothingTypeSettingsAddon)xmlSerializer.Deserialize(fileStream);
-                    fileStream.Dispose();
-                    siscd_ClothingTypeSettingsAddon.ClothingTypes.ForEach(delegate (ClothingTypeSettings x)
-                    {
-                        try
-                        {
-                            SISClothingDurability_Config.clothesTypes.Add(x.Name, x);
-                        }
-                        catch (Exception ex2)
-                        {
-                            SISClothingDurability_Config.Log("Error adding " + x.Name + ": " + ex2.Message);
-                        }
-                    });
-                    SISClothingDurability_Config.Log("Loaded ClothingTypeSettingsAddon from path " + text);
-                }
-                catch (Exception ex)
-                {
-                    SISClothingDurability_Config.Log("Error loading ClothingTypeSettingsAddon from path " + text);
-                    throw new Exception("Error loading ClothingTypeSettingsAddon at " + text + ";" + ex.Message);
-                }
-            }
-        }
-    }
-
-    public static void Log(string msg)
-    {
-        if (SISClothingDurability_Config.LoggingActive)
-        {
-            try
-            {
-                FileLog.Log("[SISCD] " + msg);
-            }
-            catch
-            {
-            }
-        }
-    }
-
-    public static void ReloadSettings()
-    {
-        SISClothingDurability_Config.ResetSettings();
-        SISClothingDurability_Config.LoadSettings();
-    }
-
-    private static void FillSettings(SISClothingDurability_Settings obj)
-    {
-        FileLog.logPath = SISClothingDurability_Config.GetStoryPath() + SISClothingDurability_Config.LogFilePath;
-        if (File.Exists(FileLog.logPath))
-        {
-            File.Delete(FileLog.logPath);
-        }
-        SISClothingDurability_Config.Log(JsonConvert.SerializeObject(obj));
-        SISClothingDurability_Config.GetAndAddSounds();
-        SISClothingDurability_Config.LoggingActive = obj.LoggingActive;
-        SISClothingDurability_Config.EnabledForPlayer = obj.EnabledForPlayer;
-        SISClothingDurability_Config.EnabledForNPCs = obj.EnabledForNPCs;
-        SISClothingDurability_Config.EnabledForPlayerCommunity = obj.EnabledForPlayerCommunity;
-        SISClothingDurability_Config.DurabilityDegradeRate = obj.DurabilityDegradeRate;
-        SISClothingDurability_Config.DurabilityDegradeOverTimePcnt = obj.DurabilityDegradeOverTimePcnt;
-        SISClothingDurability_Config.ClothingDegradesOnAttack = obj.ClothingDegradesOnAttack;
-        SISClothingDurability_Config.ClothingDegradesOnDamaged = obj.ClothingDegradesOnDamaged;
-        SISClothingDurability_Config.ClothingDegradesOverTimeForPlayer = obj.ClothingDegradesOverTimeForPlayer;
-        SISClothingDurability_Config.ClothingDegradesOverTimeForPlayerCommunity = obj.ClothingDegradesOverTimeForPlayerCommunity;
-        SISClothingDurability_Config.ClothingDegradesOverTimeForNPCs = obj.ClothingDegradesOverTimeForNPCs;
-        SISClothingDurability_Config.ClothingDegradesOverTimeFrequency = obj.ClothingDegradesOverTimeFrequency;
-        SISClothingDurability_Config.ArmorProtectsFromDegradation = obj.ArmorProtectsFromDegradation;
-        SISClothingDurability_Config.ClothesSpawnWithLessDurability = obj.ClothesSpawnWithLessDurability;
-        SISClothingDurability_Config.MinClothesDurabilityOnSpawnPcnt = obj.MinClothesDurabilityOnSpawnPcnt;
-        SISClothingDurability_Config.MaxClothesDurabilityOnSpawnPcnt = obj.MaxClothesDurabilityOnSpawnPcnt;
-        SISClothingDurability_Config.CanBackpacksDegrade = obj.CanBackpacksDegrade;
-        SISClothingDurability_Config.CanShoesDegrade = obj.CanShoesDegrade;
-        SISClothingDurability_Config.CanGlassesDegrade = obj.CanGlassesDegrade;
-        SISClothingDurability_Config.ClothingDurabilityBarColor = obj.ClothingDurabilityBarColor;
-        SISClothingDurability_Config.ZombiesSpawnWithHeavilyDamagedClothing = obj.ZombiesSpawnWithHeavilyDamagedClothing;
-        SISClothingDurability_Config.UseDurabilityDegradeOverTimePcnt = obj.UseDurabilityDegradeOverTimePcnt;
-        SISClothingDurability_Config.ShowStatusMsgOnClothingBroken = obj.ShowStatusMsgOnClothingBroken;
-        SISClothingDurability_Config.CharactersSpeakOnClothingBroken = obj.CharactersSpeakOnClothingBroken;
-        SISClothingDurability_Config.PlaySoundOnClothingBroken = obj.PlaySoundOnClothingBroken;
-        SISClothingDurability_Config.ShowNotificationOnClothingBroken = obj.ShowNotificationOnClothingBroken;
-        SISClothingDurability_Config.RepairClothingDurabilityIncreasePcnt = obj.RepairClothingDurabilityIncreasePcnt;
-        SISClothingDurability_Config.RepairClothingMaxDurabilityDecreasePcnt = obj.RepairClothingMaxDurabilityDecreasePcnt;
-        foreach (ClothingTypeSettings clothingTypeSettings in obj.ClothingTypes)
-        {
-            try
-            {
-                SISClothingDurability_Config.clothesTypes.Add(clothingTypeSettings.Name, clothingTypeSettings);
-            }
-            catch (Exception ex)
-            {
-                SISClothingDurability_Config.Log("Error adding " + clothingTypeSettings.Name + ": " + ex.Message);
-            }
-        }
-        foreach (string text in obj.ExcludedTypes)
-        {
-            try
-            {
-                SISClothingDurability_Config.ExcludedTypes.Add(text);
-            }
-            catch (Exception ex2)
-            {
-                SISClothingDurability_Config.Log("Error adding " + text + ": " + ex2.Message);
-            }
-        }
-    }
-
-    private static string GetStoryPath()
-    {
-        foreach (Story story in GameImpl.Instance.CurrentStories)
-        {
-            string text = story.Path + SISClothingDurability_Config.ModIdentifier;
-            string text2 = story.Path + SISClothingDurability_Config.SettingsFilePath;
-            if (File.Exists(text) || File.Exists(text2))
+            if (File.Exists(story.Path + ModIdentifierFilename) ||
+                File.Exists(story.Path + SettingsFilename))
             {
                 return story.Path;
             }
@@ -244,13 +45,171 @@ public class SISClothingDurability_Config
         return ".";
     }
 
+    public static void SetSaveFilePath(string path)
+    {
+        SaveFilePath = path + SaveFilename;
+    }
+
+    public static void ClearSettings()
+    {
+        IsConfigLoaded = false;
+        FillSettings(SISClothingDurability_Settings.GetDefault());
+        ClothesTypes.Clear();
+    }
+
+    public static void LoadSettings()
+    {
+        try
+        {
+            if (File.Exists(SettingsFilePath))
+            {
+                using (FileStream fileStream = new FileStream(SettingsFilePath, FileMode.Open))
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Settings));
+                    SISClothingDurability_Settings sisclothingDurability_Settings = xmlSerializer.Deserialize(fileStream) as SISClothingDurability_Settings;
+                    FillSettings(sisclothingDurability_Settings);
+                }
+                Log($"Loaded settings from path {SettingsFilePath}");
+            }
+            else
+            {
+                SISClothingDurability_Settings @default = SISClothingDurability_Settings.GetDefault();
+                FillSettings(@default);
+                using (FileStream fileStream = File.Create(SettingsFilePath))
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Settings));
+                    xmlSerializer.Serialize(fileStream, @default);
+                }
+                Log("Loaded default settings since no settings file was found");
+                Log($"Saved settings to {SettingsFilePath}");
+            }
+            LoadClothingTypeSettingsFromOtherMods();
+        }
+        catch (Exception ex)
+        {
+            Log($"Error loading settings: {ex}");
+            FillSettings(SISClothingDurability_Settings.GetDefault());
+            throw new Exception($"Error loading SISCD settings: {ex.Message}");
+        }
+        IsConfigLoaded = true;
+    }
+
+    public static void LoadClothingTypeSettingsFromOtherMods()
+    {
+        if (!File.Exists(ClothingTypeSettingsOtherModsFilePath))
+        {
+            return;
+        }
+
+        Log("Found Addon at " + ClothingTypeSettingsOtherModsFilePath);
+        try
+        {
+            using (FileStream fileStream = new FileStream(ClothingTypeSettingsOtherModsFilePath, FileMode.Open))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISCD_ClothingTypeSettingsAddon));
+                SISCD_ClothingTypeSettingsAddon siscd_ClothingTypeSettingsAddon = (SISCD_ClothingTypeSettingsAddon)xmlSerializer.Deserialize(fileStream);
+                siscd_ClothingTypeSettingsAddon.ClothingTypes.ForEach(delegate (ClothingTypeSettings x)
+                {
+                    try
+                    {
+                        ClothesTypes.Add(x.Name, x);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log($"Error adding {x.Name}: {ex.Message}");
+                    }
+                });
+            }
+            Log("Loaded ClothingTypeSettingsAddon from path " + ClothingTypeSettingsOtherModsFilePath);
+        }
+        catch (Exception ex)
+        {
+            Log("Error loading ClothingTypeSettingsAddon from path " + ClothingTypeSettingsOtherModsFilePath);
+            throw new Exception("Error loading ClothingTypeSettingsAddon at " + ClothingTypeSettingsOtherModsFilePath + ";" + ex.Message);
+        }
+    }
+
+    public static void Log(string message)
+    {
+        try
+        {
+            if (LoggingEnabled)
+            {
+                using (StreamWriter streamWriter = File.AppendText(LogFilePath))
+                {
+                    streamWriter.WriteLine($"{new string(FileLog.indentChar, FileLog.indentLevel)}[SISClothingDurability] {message}");
+                }
+            }
+        }
+        catch { }
+    }
+
+    public static void ReloadSettings()
+    {
+        IsConfigLoaded = false;
+        LoadSettings();
+    }
+
+    private static void FillSettings(SISClothingDurability_Settings obj)
+    {
+        Log(JsonConvert.SerializeObject(obj));
+        LoggingEnabled = obj.LoggingEnabled;
+        EnabledForPlayer = obj.EnabledForPlayer;
+        EnabledForNPCs = obj.EnabledForNPCs;
+        EnabledForPlayerCommunity = obj.EnabledForPlayerCommunity;
+        DurabilityDegradeRate = obj.DurabilityDegradeRate;
+        DurabilityDegradeOverTimePercent = obj.DurabilityDegradeOverTimePercent;
+        ClothingDegradesOnAttack = obj.ClothingDegradesOnAttack;
+        ClothingDegradesOnDamaged = obj.ClothingDegradesOnDamaged;
+        ClothingDegradesOverTimeForPlayer = obj.ClothingDegradesOverTimeForPlayer;
+        ClothingDegradesOverTimeForPlayerCommunity = obj.ClothingDegradesOverTimeForPlayerCommunity;
+        ClothingDegradesOverTimeForNPCs = obj.ClothingDegradesOverTimeForNPCs;
+        ClothingDegradesOverTimeFrequency = obj.ClothingDegradesOverTimeFrequency;
+        ArmorProtectsFromDegradation = obj.ArmorProtectsFromDegradation;
+        ClothesSpawnWithLessDurability = obj.ClothesSpawnWithLessDurability;
+        MinClothesDurabilityOnSpawnPercent = obj.MinClothesDurabilityOnSpawnPercent;
+        MaxClothesDurabilityOnSpawnPercent = obj.MaxClothesDurabilityOnSpawnPercent;
+        CanBackpacksDegrade = obj.CanBackpacksDegrade;
+        CanShoesDegrade = obj.CanShoesDegrade;
+        CanGlassesDegrade = obj.CanGlassesDegrade;
+        ClothingDurabilityBarColor = obj.ClothingDurabilityBarColor;
+        ZombiesSpawnWithHeavilyDamagedClothing = obj.ZombiesSpawnWithHeavilyDamagedClothing;
+        UseDurabilityDegradeOverTimePercent = obj.UseDurabilityDegradeOverTimePercent;
+        ShowStatusMsgOnClothingBroken = obj.ShowStatusMsgOnClothingBroken;
+        CharactersSpeakOnClothingBroken = obj.CharactersSpeakOnClothingBroken;
+        PlaySoundOnClothingBroken = obj.PlaySoundOnClothingBroken;
+        ShowNotificationOnClothingBroken = obj.ShowNotificationOnClothingBroken;
+        RepairClothingDurabilityIncreasePercent = obj.RepairClothingDurabilityIncreasePercent;
+        RepairClothingMaxDurabilityDecreasePercent = obj.RepairClothingMaxDurabilityDecreasePercent;
+        foreach (ClothingTypeSettings clothingTypeSettings in obj.ClothingTypes)
+        {
+            try
+            {
+                ClothesTypes.Add(clothingTypeSettings.Name, clothingTypeSettings);
+            }
+            catch (Exception ex)
+            {
+                Log($"Error adding {clothingTypeSettings.Name}: {ex.Message}");
+            }
+        }
+        foreach (string prototypeName in obj.ExcludedTypes)
+        {
+            try
+            {
+                ExcludedTypes.Add(prototypeName);
+            }
+            catch (Exception ex)
+            {
+                Log($"Error adding {prototypeName}: {ex.Message}");
+            }
+        }
+    }
+
     public static float GetMaxDurabilityForEquipment(string name)
     {
         if (!string.IsNullOrEmpty(name))
         {
-            ClothingTypeSettings clothingTypeSettings;
-            bool flag2 = SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings);
-            if (flag2)
+            if (ClothesTypes.TryGetValue(name, out ClothingTypeSettings clothingTypeSettings))
             {
                 return clothingTypeSettings.MaxDurability;
             }
@@ -262,8 +221,7 @@ public class SISClothingDurability_Config
     {
         if (!string.IsNullOrEmpty(name))
         {
-            ClothingTypeSettings clothingTypeSettings;
-            if (SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings))
+            if (ClothesTypes.TryGetValue(name, out ClothingTypeSettings clothingTypeSettings))
             {
                 return clothingTypeSettings;
             }
@@ -275,8 +233,7 @@ public class SISClothingDurability_Config
     {
         if (!string.IsNullOrEmpty(name))
         {
-            ClothingTypeSettings clothingTypeSettings;
-            if (SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings))
+            if (ClothesTypes.TryGetValue(name, out ClothingTypeSettings clothingTypeSettings))
             {
                 return clothingTypeSettings.MaxPartsOnBroken;
             }
@@ -288,8 +245,7 @@ public class SISClothingDurability_Config
     {
         if (!string.IsNullOrEmpty(name))
         {
-            ClothingTypeSettings clothingTypeSettings;
-            if (SISClothingDurability_Config.clothesTypes.TryGetValue(name, out clothingTypeSettings))
+            if (ClothesTypes.TryGetValue(name, out ClothingTypeSettings clothingTypeSettings))
             {
                 return clothingTypeSettings.MinPartsOnBroken;
             }
@@ -299,62 +255,54 @@ public class SISClothingDurability_Config
 
     public static void OnSaveGame(string Path)
     {
-        if (!SISClothingDurability_Config.SaveInProgress)
+        if (SaveInProgress)
         {
-            SISClothingDurability_Config.Log("SAVING");
-            SISClothingDurability_Config.Log("Saving to " + Path);
-            SISClothingDurability_Config.SaveInProgress = true;
-            string text = Path + SISClothingDurability_Config.SaveFilePath;
-            if (File.Exists(text))
-            {
-                File.Delete(text);
-            }
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Manager));
-            SISClothingDurability_Manager.instance.BuildListFromDictionary();
-            FileStream fileStream = File.Create(text);
-            xmlSerializer.Serialize(fileStream, SISClothingDurability_Manager.instance);
-            fileStream.Dispose();
-            SISClothingDurability_Config.Log("SAVED");
+            return;
         }
+
+        SaveInProgress = true;
+        Log($"Saving to {SaveFilePath}");
+        SISClothingDurability_Manager.Instance.BuildListFromDictionary();
+        using (FileStream fileStream = File.Create(SaveFilePath))
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Manager));
+            xmlSerializer.Serialize(fileStream, SISClothingDurability_Manager.Instance);
+        }
+        Log("Saving complete");
     }
 
     public static bool OnLoadGame(string Path)
     {
-        bool flag3;
-        if (!SISClothingDurability_Config.LoadInProgress)
+        if (LoadInProgress || !File.Exists(SaveFilePath))
         {
-            SISClothingDurability_Config.Log("LOADING");
-            SISClothingDurability_Config.LoadInProgress = true;
-            string text = Path + SISClothingDurability_Config.SaveFilePath;
-            if (!File.Exists(text))
-            {
-                flag3 = false;
-            }
-            else
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Manager));
-                FileStream fileStream = new FileStream(text, FileMode.Open);
-                SISClothingDurability_Manager.instance = (SISClothingDurability_Manager)xmlSerializer.Deserialize(fileStream);
-                SISClothingDurability_Manager.instance.BuildDictionaryFromList();
-                fileStream.Dispose();
-                SISClothingDurability_Config.Log("LOADED");
-                flag3 = true;
-            }
+            return false;
         }
-        else
+
+        LoadInProgress = true;
+        Log($"Loading from {SaveFilePath}");
+        using (FileStream fileStream = new FileStream(SaveFilePath, FileMode.Open))
         {
-            flag3 = false;
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SISClothingDurability_Manager));
+            SISClothingDurability_Manager.Instance = xmlSerializer.Deserialize(fileStream) as SISClothingDurability_Manager;
+            SISClothingDurability_Manager.Instance.BuildDictionaryFromList();
         }
-        return flag3;
+        Log("Loading complete");
+        return true;
     }
 
-    public static SISClothingDurability_Config instance;
-    private static bool LoggingActive = true;
-    private static string SaveFilePath = "/Save_ClothingDurability.sav";
-    private static string SettingsFilePath = "/Settings_ClothingDurability.xml";
-    private static string ClothingTypeSettingsOtherMods = "/SISCD_ClothingAddon.xml";
-    private static string ModIdentifier = "/SISCLOTHINGDURABILITY.txt";
-    private static string LogFilePath = "/log.txt";
+    public static SISClothingDurability_Config Instance;
+    public static string StoryPath = "";
+    public static string SaveFilePath = "";
+    public static string SettingsFilePath = "";
+    public static string ClothingTypeSettingsOtherModsFilePath = "";
+    public static string ModIdentifierFilePath = "";
+    public static string LogFilePath = "";
+    private static string SaveFilename = "/Save_ClothingDurability.sav";
+    private static string SettingsFilename = "/Settings_ClothingDurability.xml";
+    private static string ClothingTypeSettingsOtherModsFilename = "/Settings_ClothingAddon.xml";
+    private static string ModIdentifierFilename = "/SISCLOTHINGDURABILITY.txt";
+    private static string LogFilename = "/Log_SISClothingDurability.txt";
+
     public const string HeavySewingKitNameKey = "SISCD_HeavySewingKit";
     public const string SewingKitNameKey = "SISCD_SewingKit";
     public static string SpeechClothingBrokenUniqueId = "SISCD_NPCClothingBroken";
@@ -363,39 +311,49 @@ public class SISClothingDurability_Config
     public static string RepairNormalClothingRecipeNameKey = "RECIPE_SISCD_RepairNormalClothing";
     public static string RepairArmorClothingRecipeUniqueId = "SISCD_RepairArmorClothing";
     public static string RepairArmorClothingRecipeNameKey = "RECIPE_SISCD_RepairArmorClothing";
+
+    public static List<Resource<AudioClip>> SoundsClothingBroken = new List<Resource<AudioClip>>();
+
     public static bool SaveInProgress = false;
     public static bool LoadInProgress = false;
     public static bool IsConfigLoaded = false;
+
+    public static bool LoggingEnabled = false;
+    public static bool EnabledForPlayer;
+    public static bool EnabledForPlayerCommunity;
+    public static bool EnabledForNPCs;
+    public static bool CanGlassesDegrade;
+    public static bool CanBackpacksDegrade;
+    public static bool CanShoesDegrade;
+
+    public static bool ClothingDegradesOnAttack;
+    public static bool ClothingDegradesOnDamaged;
+    public static bool ArmorProtectsFromDegradation;
+
+    public static bool ZombiesSpawnWithHeavilyDamagedClothing;
+    public static bool ClothesSpawnWithLessDurability;
+    public static float MinClothesDurabilityOnSpawnPercent;
+    public static float MaxClothesDurabilityOnSpawnPercent;
+
     public static float DurabilityDegradeRate;
-    public static float DurabilityDegradeOverTimePcnt;
-    public static bool UseDurabilityDegradeOverTimePcnt;
+
     public static bool ClothingDegradesOverTimeForPlayer;
     public static bool ClothingDegradesOverTimeForPlayerCommunity;
     public static bool ClothingDegradesOverTimeForNPCs;
     public static float ClothingDegradesOverTimeFrequency;
-    public static bool ClothingDegradesOnAttack;
-    public static bool ClothingDegradesOnDamaged;
-    public static bool ClothesSpawnWithLessDurability;
-    public static float MinClothesDurabilityOnSpawnPcnt;
-    public static float MaxClothesDurabilityOnSpawnPcnt;
-    public static bool ZombiesSpawnWithHeavilyDamagedClothing;
-    public static Color32 ClothingDurabilityBarColor;
-    public static bool ArmorProtectsFromDegradation;
-    public static float RepairClothingDurabilityIncreasePcnt;
-    public static float RepairClothingMaxDurabilityDecreasePcnt;
+    public static bool UseDurabilityDegradeOverTimePercent;
+    public static float DurabilityDegradeOverTimePercent;
+
+    public static float RepairClothingDurabilityIncreasePercent;
+    public static float RepairClothingMaxDurabilityDecreasePercent;
+
     public static bool ShowStatusMsgOnClothingBroken;
     public static bool CharactersSpeakOnClothingBroken;
     public static bool PlaySoundOnClothingBroken;
     public static bool ShowNotificationOnClothingBroken;
-    public static bool EnabledForPlayer;
-    public static bool EnabledForPlayerCommunity;
-    public static bool EnabledForNPCs;
-    public static bool EnabledForNormalClothing;
-    public static bool EnabledForArmorClothing;
-    public static bool CanBackpacksDegrade;
-    public static bool CanShoesDegrade;
-    public static bool CanGlassesDegrade;
-    public static Dictionary<string, ClothingTypeSettings> clothesTypes = new Dictionary<string, ClothingTypeSettings>();
+
+    public static Color32 ClothingDurabilityBarColor;
+
+    public static Dictionary<string, ClothingTypeSettings> ClothesTypes = new Dictionary<string, ClothingTypeSettings>();
     public static List<string> ExcludedTypes = new List<string>();
-    public static List<Resource<AudioClip>> SoundsClothingBroken = new List<Resource<AudioClip>>();
 }

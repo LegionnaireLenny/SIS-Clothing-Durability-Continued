@@ -32,14 +32,14 @@ public class Character_RandomizeClothing__Patch
 
             SISClothingDurability_Config.Log("- clothing: " + equipment.GetPrototype().Name);
             ClothingTypeSettings clothingModifiersForEquipment = SISClothingDurability_Config.GetClothingModifiersForEquipment(equipment.GetPrototype().Name);
-            if (!SISClothingDurability_Manager.instance.IsEquipmentRegistered(equipment))
+            if (!SISClothingDurability_Manager.Instance.IsEquipmentRegistered(equipment))
             {
-                SISClothingDurability_Manager.instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
+                SISClothingDurability_Manager.Instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
             }
-            SISCD_ClothesDurabilityInfo clothesDurabilityInfo = SISClothingDurability_Manager.instance.GetClothesDurabilityInfo(equipment);
+            SISCD_ClothesDurabilityInfo clothesDurabilityInfo = SISClothingDurability_Manager.Instance.GetClothesDurabilityInfo(equipment);
             float num = (float)SISClothingDurability_Utils.NextBetweenInts(75, 90) / 100f * clothesDurabilityInfo.Durability;
             SISClothingDurability_Config.Log("--- To degrade: " + num.ToString());
-            SISClothingDurability_Manager.instance.ReduceDurability(equipment, num);
+            SISClothingDurability_Manager.Instance.ReduceDurability(equipment, num);
         }
     }
 }

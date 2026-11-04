@@ -18,8 +18,8 @@ public class Equipment_Spawn__Patch
         }
 
         ClothingTypeSettings clothingModifiersForEquipment = SISClothingDurability_Config.GetClothingModifiersForEquipment(__result.GetPrototype().Name);
-        float num = (float)SISClothingDurability_Utils.NextBetweenInts((int)(clothingModifiersForEquipment.MaxDurability * SISClothingDurability_Config.MinClothesDurabilityOnSpawnPcnt), (int)(SISClothingDurability_Config.MaxClothesDurabilityOnSpawnPcnt * clothingModifiersForEquipment.MaxDurability));
+        float num = (float)SISClothingDurability_Utils.NextBetweenInts((int)(clothingModifiersForEquipment.MaxDurability * SISClothingDurability_Config.MinClothesDurabilityOnSpawnPercent), (int)(SISClothingDurability_Config.MaxClothesDurabilityOnSpawnPercent * clothingModifiersForEquipment.MaxDurability));
         SISClothingDurability_Config.Log($"Spawning {prototype.Name};{num};{clothingModifiersForEquipment.MaxDurability}");
-        SISClothingDurability_Manager.instance.AddEquipment(__result, num, clothingModifiersForEquipment.MaxDurability);
+        SISClothingDurability_Manager.Instance.AddEquipment(__result, num, clothingModifiersForEquipment.MaxDurability);
     }
 }

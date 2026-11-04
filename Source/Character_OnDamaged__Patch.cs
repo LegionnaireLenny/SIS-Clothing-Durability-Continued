@@ -186,11 +186,11 @@ public class Character_OnDamaged__Patch
             return;
         }
 
-        if (!SISClothingDurability_Manager.instance.IsEquipmentRegistered(equipment))
+        if (!SISClothingDurability_Manager.Instance.IsEquipmentRegistered(equipment))
         {
-            SISClothingDurability_Manager.instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
+            SISClothingDurability_Manager.Instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
         }
-        SISClothingDurability_Manager.instance.ReduceDurabilityByPercentage(equipment, GetDegradationPercent(equipment, injuryType, damage) * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
+        SISClothingDurability_Manager.Instance.ReduceDurabilityByPercentage(equipment, GetDegradationPercent(equipment, injuryType, damage) * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
     }
 
     private static void DamageAllEquipment(Character __instance, InjuryLocation injuryLocation, InjuryType injuryType)
@@ -211,16 +211,16 @@ public class Character_OnDamaged__Patch
                 continue;
             }
 
-            if (!SISClothingDurability_Manager.instance.IsEquipmentRegistered(equipment))
+            if (!SISClothingDurability_Manager.Instance.IsEquipmentRegistered(equipment))
             {
-                SISClothingDurability_Manager.instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
+                SISClothingDurability_Manager.Instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
             }
 
             float degradationPercent = GetDegradationPercent(equipment, injuryType);
             bool isEquipmentAtInjuryLocation = equipmentAtInjuryLocation == null || equipmentAtInjuryLocation.Contains(equipment);
             // TODO: It looks like equipment not at the injury location is being damaged more, which seems backwards
             float num = isEquipmentAtInjuryLocation ? degradationPercent : (degradationPercent / 1.5f);
-            SISClothingDurability_Manager.instance.ReduceDurabilityByPercentage(equipment, num * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
+            SISClothingDurability_Manager.Instance.ReduceDurabilityByPercentage(equipment, num * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
         }
     }
 

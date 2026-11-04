@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System;
 
 [HarmonyPatch(typeof(SaveGameManager), "Save")]
 public class SaveGameManager_Save__Patch
@@ -9,7 +10,19 @@ public class SaveGameManager_Save__Patch
         {
             return;
         }
-        SISClothingDurability_Config.OnSaveGame(GameImpl.Instance.SaveGamePath + "/" + request.SaveGame.DirName + "/");
-        SISClothingDurability_Config.SaveInProgress = false;
+
+        try
+        {
+            if (string.IsNullOrEmpty(SISClothingDurability_Config.SaveFilePath))
+            {
+                SISClothingDurability_Config.SetSaveFilePath($"{GameImpl.Instance.SaveGamePath}/{request.SaveGame.DirName}");
+            }
+            SISClothingDurability_Config.OnSaveGame(SISClothingDurability_Config.SaveFilePath);
+            SISClothingDurability_Config.SaveInProgress = false;
+        }
+        catch (Exception ex)
+        {
+            SISClothingDurability_Config.Log($"Error saving: {ex}");
+        }
     }
 }

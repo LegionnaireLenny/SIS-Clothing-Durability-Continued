@@ -34,12 +34,12 @@ public class Character_OnMeleeAttack__Patch
                 ClothingTypeSettings clothingModifiersForEquipment = SISClothingDurability_Config.GetClothingModifiersForEquipment(equipment.GetPrototype().Name);
                 if (clothingModifiersForEquipment.CanDegradeOnAttack)
                 {
-                    if (!SISClothingDurability_Manager.instance.IsEquipmentRegistered(equipment))
+                    if (!SISClothingDurability_Manager.Instance.IsEquipmentRegistered(equipment))
                     {
-                        SISClothingDurability_Manager.instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
+                        SISClothingDurability_Manager.Instance.AddEquipment(equipment, clothingModifiersForEquipment.MaxDurability, clothingModifiersForEquipment.MaxDurability);
                     }
                     float degradeOverTimePcnt = clothingModifiersForEquipment.DegradeOverTimePcnt;
-                    SISClothingDurability_Manager.instance.ReduceDurability(equipment, degradeOverTimePcnt * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
+                    SISClothingDurability_Manager.Instance.ReduceDurability(equipment, degradeOverTimePcnt * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
                 }
             }
         }

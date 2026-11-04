@@ -16,10 +16,10 @@ public class Character_SimulateSurvivalFactors__Patch
             return;
         }
 
-        float num = SISClothingDurability_Manager.instance.GetCharacterUpdateInfo(__instance).Dts + dts;
+        float num = SISClothingDurability_Manager.Instance.GetCharacterUpdateInfo(__instance).Dts + dts;
         if (num > SISClothingDurability_Config.ClothingDegradesOverTimeFrequency)
         {
-            SISClothingDurability_Manager.instance.SetCharacterUpdateInfo(__instance, curTime, 0f);
+            SISClothingDurability_Manager.Instance.SetCharacterUpdateInfo(__instance, curTime, 0f);
             SISClothingDurability_Config.Log($"Character_SimulateSurvivalFactors__Patch;{__instance.GetDisplayNameString()};{curTime};{dts};{num}");
 
             foreach (Equipment equipment in __instance.Clothes)
@@ -30,20 +30,20 @@ public class Character_SimulateSurvivalFactors__Patch
                     if (clothingModifiersForEquipment.CanDegradeOverTime)
                     {
                         SISClothingDurability_Config.Log("ClothingType: " + equipment.GetClothingType().ToString() + ";" + equipment.GetDisplayNameString());
-                        if (!SISClothingDurability_Manager.instance.IsEquipmentRegistered(equipment))
+                        if (!SISClothingDurability_Manager.Instance.IsEquipmentRegistered(equipment))
                         {
-                            SISClothingDurability_Manager.instance.AddEquipment(equipment, 15f, 15f);
+                            SISClothingDurability_Manager.Instance.AddEquipment(equipment, 15f, 15f);
                         }
-                        SISClothingDurability_Manager.instance.ReduceDurabilityByPercentage(equipment, (SISClothingDurability_Config.UseDurabilityDegradeOverTimePcnt ? SISClothingDurability_Config.DurabilityDegradeOverTimePcnt : clothingModifiersForEquipment.DegradeOverTimePcnt) * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
+                        SISClothingDurability_Manager.Instance.ReduceDurabilityByPercentage(equipment, (SISClothingDurability_Config.UseDurabilityDegradeOverTimePercent ? SISClothingDurability_Config.DurabilityDegradeOverTimePercent : clothingModifiersForEquipment.DegradeOverTimePcnt) * clothingModifiersForEquipment.DegradeRate * SISClothingDurability_Config.DurabilityDegradeRate);
                     }
                 }
 
             }
-            SISClothingDurability_Manager.instance.SetCharacterUpdateInfo(__instance, curTime, 0f);
+            SISClothingDurability_Manager.Instance.SetCharacterUpdateInfo(__instance, curTime, 0f);
         }
         else
         {
-            SISClothingDurability_Manager.instance.SetCharacterUpdateInfo(__instance, curTime, num);
+            SISClothingDurability_Manager.Instance.SetCharacterUpdateInfo(__instance, curTime, num);
         }
     }
 }

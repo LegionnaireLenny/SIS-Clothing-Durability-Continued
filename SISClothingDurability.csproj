@@ -97,6 +97,7 @@
     <Compile Include="Source\SISClothingDurability_Manager.cs" />
     <Compile Include="Source\SISClothingDurability_Settings.cs" />
     <Compile Include="Source\SISClothingDurability_Utils.cs" />
+    <Compile Include="Source\Story_OnLoadedAssetBundle__Patch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />

@@ -2,22 +2,23 @@
 
 public class Main
 {
+    public static Harmony HarmonyInstance;
+    public static SISClothingDurability_Manager SISCDManager;
+
     public static void Load()
     {
-        Main.HarmonyInstance = new Harmony("SISClothingDurability");
-        Main.HarmonyInstance.PatchAll();
-        Main.SISCDManager = new SISClothingDurability_Manager();
-        SISClothingDurability_Config.ReloadSettings();
+        SISCDManager = new SISClothingDurability_Manager();
+        SISClothingDurability_Config.Initialize();
+        SISClothingDurability_Config.LoadSettings();
+        HarmonyInstance = new Harmony("SISClothingDurability");
+        HarmonyInstance.PatchAll();
     }
 
     public static void Unload()
     {
-        if (Main.HarmonyInstance != null)
+        if (HarmonyInstance != null)
         {
-            Main.HarmonyInstance.UnpatchAll(null);
+            HarmonyInstance.UnpatchAll(null);
         }
     }
-
-    public static Harmony HarmonyInstance;
-    public static SISClothingDurability_Manager SISCDManager;
 }
