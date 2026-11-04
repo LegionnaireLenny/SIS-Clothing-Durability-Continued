@@ -1,5 +1,5 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System;
 
 [HarmonyPatch(typeof(Equipment), "Spawn", new Type[]
 {
@@ -10,7 +10,7 @@ public class Equipment_Spawn__Patch
 {
     private static void Postfix(Equipment __result, Equipment __instance, EquipmentPrototype prototype, int amount)
     {
-        if (__result == null || 
+        if (__result == null ||
             !SISClothingDurability_Config.ClothesSpawnWithLessDurability ||
             !SISClothingDurability_Utils.IsPrototypeDegradableClothing(__result.GetPrototype()))
         {

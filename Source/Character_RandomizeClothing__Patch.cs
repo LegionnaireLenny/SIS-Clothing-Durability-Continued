@@ -1,5 +1,5 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System;
 
 [HarmonyPatch(typeof(Character), "RandomizeClothing", new Type[]
 {
@@ -15,7 +15,7 @@ public class Character_RandomizeClothing__Patch
 {
     private static void Postfix(Human __instance, CustomRandom rand, bool seasonallyAppropriate, bool isPortrait, bool mustHaveBackpack, bool mustHaveBodyArmor, bool mustHaveHelmet, bool mustHaveLegArmor)
     {
-        if (!SISClothingDurability_Config.ZombiesSpawnWithHeavilyDamagedClothing || 
+        if (!SISClothingDurability_Config.ZombiesSpawnWithHeavilyDamagedClothing ||
             !__instance.Zombie)
         {
             return;

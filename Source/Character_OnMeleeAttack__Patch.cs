@@ -1,5 +1,5 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System;
 
 [HarmonyPatch(typeof(Character), "OnMeleeAttack", new Type[]
 {
@@ -15,7 +15,7 @@ public class Character_OnMeleeAttack__Patch
 {
     private static void Postfix(Character __instance, Character targetCharacter, AttackType attackType, InjuryType injuryType, Bone bone, float damage, bool assassinate, bool stealthy)
     {
-        if (!SISClothingDurability_Config.ClothingDegradesOnAttack || 
+        if (!SISClothingDurability_Config.ClothingDegradesOnAttack ||
             (attackType != AttackType.Low &&
             attackType != AttackType.High &&
             attackType != AttackType.Middle &&
@@ -27,7 +27,7 @@ public class Character_OnMeleeAttack__Patch
             return;
         }
 
-        foreach (Equipment equipment in __instance.Clothes) 
+        foreach (Equipment equipment in __instance.Clothes)
         {
             if (equipment != null && SISClothingDurability_Utils.IsPrototypeDegradableClothing(equipment.GetPrototype()))
             {

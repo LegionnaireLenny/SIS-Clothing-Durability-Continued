@@ -4,20 +4,20 @@ using UnityEngine;
 [HarmonyPatch(typeof(Recipe), "UseIngredientsAndCreateProduct")]
 public class Recipe_UseIngredientsAndCreateProduct__Patch
 {
-	private static Weapon FindWeaponOfPrototypeInInventory(Character carrier, EquipmentPrototype equipmentPrototype)
-	{
-		return carrier.Inventory.FindItemOfType(equipmentPrototype) as Weapon;
-	}
+    private static Weapon FindWeaponOfPrototypeInInventory(Character carrier, EquipmentPrototype equipmentPrototype)
+    {
+        return carrier.Inventory.FindItemOfType(equipmentPrototype) as Weapon;
+    }
 
-	private static Equipment CreateProductReturningCreated(Recipe recipe, TileObject carrier, Community community, Equipment usingItem, TerrainCoord destTile, Prop.OrientationType orientation, float ingredientsNutrition, InfectionType ingredientsInfectedWith, out float numProduced, bool addToGatheredItems)
-	{
-		numProduced = 0f;
+    private static Equipment CreateProductReturningCreated(Recipe recipe, TileObject carrier, Community community, Equipment usingItem, TerrainCoord destTile, Prop.OrientationType orientation, float ingredientsNutrition, InfectionType ingredientsInfectedWith, out float numProduced, bool addToGatheredItems)
+    {
+        numProduced = 0f;
         if (recipe.ProductPrototype == null)
         {
             return null;
         }
 
-		Character character = carrier as Character;
+        Character character = carrier as Character;
         Equipment equipment = null;
         for (int i = 0; i < recipe.ProductAmount; i++)
         {
@@ -45,9 +45,9 @@ public class Recipe_UseIngredientsAndCreateProduct__Patch
             NotificationManager.Instance.AddEquipmentNotification(null, character, equipment, 1);
         }
         return equipment;
-	}
+    }
 
-	private static bool Prefix(ref float __result, Recipe __instance, Character carrier, Community community, Equipment usingItem, TerrainCoord destTile, Prop.OrientationType orientation, bool addToGatheredItems, bool checkEquipmentPolicy)
+    private static bool Prefix(ref float __result, Recipe __instance, Character carrier, Community community, Equipment usingItem, TerrainCoord destTile, Prop.OrientationType orientation, bool addToGatheredItems, bool checkEquipmentPolicy)
     {
         if (!__instance.UniqueID.StartsWith("SISCD_Repair") ||
             !__instance.HasAllIngredients(carrier, carrier, usingItem, checkEquipmentPolicy ? carrier : null))

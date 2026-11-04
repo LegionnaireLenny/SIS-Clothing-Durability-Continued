@@ -1,5 +1,5 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System;
 
 [HarmonyPatch(typeof(Character), "SimulateSurvivalFactors")]
 public class Character_SimulateSurvivalFactors__Patch

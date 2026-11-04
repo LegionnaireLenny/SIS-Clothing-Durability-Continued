@@ -91,7 +91,7 @@ public class SISClothingDurability_Settings
     public bool ShowNotificationOnClothingBroken = true;
 
     public Color32 ClothingDurabilityBarColor = LiquidPrototype.Urine.Col;
-    
+
     [XmlArray(ElementName = "ClothingTypes")]
     public List<ClothingTypeSettings> ClothingTypes = new List<ClothingTypeSettings>();
 

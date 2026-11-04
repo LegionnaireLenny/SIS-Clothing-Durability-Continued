@@ -227,17 +227,17 @@ public class Character_OnDamaged__Patch
     private static void Postfix(Character __instance, Character source, TileObject intendedTarget, ref InjuryType injuryType, InjuryLocation injuryLocation, InfectionType infectionType, EquipmentPrototype ammoType, SkillType skillType, ref float damage, float hitRadius, Vector3 nonDeterministicHitPos, Vector3 nonDeterministicHitForce, Bone bone, Vector3 posInBoneSpace, bool dontReact, bool assassinate, SecrecyMode secret, TargettableBodyLocation targetBodyLocation, float fuel, out bool absorbedByVest)
     {
         absorbedByVest = false;
-        if (__instance == null || 
+        if (__instance == null ||
             !SISClothingDurability_Config.ClothingDegradesOnDamaged ||
             (!SISClothingDurability_Config.EnabledForPlayer && __instance == Hud.Instance.LocalControlledCharacter) ||
-            (!SISClothingDurability_Config.EnabledForPlayerCommunity && __instance.IsOnPlayersTeam() && __instance != Hud.Instance.LocalControlledCharacter) || 
+            (!SISClothingDurability_Config.EnabledForPlayerCommunity && __instance.IsOnPlayersTeam() && __instance != Hud.Instance.LocalControlledCharacter) ||
             (!SISClothingDurability_Config.EnabledForNPCs && !__instance.IsControllableByPlayer()))
         {
             return;
         }
 
         SISClothingDurability_Config.Log($"OnDamaged; {__instance.GetDisplayNameString()};{injuryLocation};{injuryType};{damage} {(source != null ? source.GetDisplayNameString() : "NoSource")}");
-        
+
         if (injuryType == InjuryType.Fire)
         {
             SISClothingDurability_Config.Log("Injury is Fire, damaging all clothes");
