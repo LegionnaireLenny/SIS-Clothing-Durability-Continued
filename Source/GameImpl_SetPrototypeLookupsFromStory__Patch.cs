@@ -55,7 +55,7 @@ public class GameImpl_SetPrototypeLookupsFromStory__Patch
             return;
         }
 
-        //SISClothingDurability_Config.Log($"Degradable clothing found, adding recipe: {equip.Name}");
+        SISClothingDurability_Config.Log($"Degradable clothing found, adding recipe: {equip.Name}");
         Recipe recipe = new Recipe
         {
             UniqueID = uniqueID,

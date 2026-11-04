@@ -42,14 +42,15 @@ public class SISClothingDurability_Utils
 
     public static bool IsPrototypeDegradableClothing(EquipmentPrototype equip)
     {
-        return equip.ClothingType == ClothingType.Hat ||
+        return !IsPrototypeArmorClothing(equip) && 
+            (equip.ClothingType == ClothingType.Hat ||
             (CanGlassesDegrade && equip.ClothingType == ClothingType.Glasses) ||
             equip.ClothingType == ClothingType.Top ||
             equip.ClothingType == ClothingType.Bottom ||
             (CanShoesDegrade && equip.ClothingType == ClothingType.Shoes) ||
             (CanBackpacksDegrade && equip.ClothingType == ClothingType.Backpack) ||
             equip.TypeName == BaseObjectType.Beanie ||
-            equip.TypeName == BaseObjectType.Balaklava;
+            equip.TypeName == BaseObjectType.Balaklava);
     }
 
     public static bool IsPrototypeArmorClothing(EquipmentPrototype equip)
@@ -57,22 +58,6 @@ public class SISClothingDurability_Utils
         return equip.TypeName == BaseObjectType.Armor ||
             equip.ClothingType == ClothingType.BodyArmor ||
             equip.ClothingType == ClothingType.LegArmor;
-    }
-
-    public static bool CanClothingTypeDegrade(ClothingType type)
-    {
-        if ((CanBackpacksDegrade && type == ClothingType.Backpack) ||
-            (CanShoesDegrade && type == ClothingType.Shoes) ||
-            (CanGlassesDegrade && type == ClothingType.Glasses))
-        {
-            Log($"{type} CAN degrade");
-            return true;
-        }
-        else
-        {
-            Log($"{type} CANT degrade");
-            return false;
-        }
     }
 
     public static bool IsClothingDegradationEnabledForCharacter(Character character)

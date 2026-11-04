@@ -6,10 +6,8 @@ public class Character_SimulateSurvivalFactors__Patch
 {
     private static void Postfix(Character __instance, TimeSpan curTime, float dts)
     {
-        if ((!SISClothingDurability_Config.EnabledForPlayer && __instance == Hud.Instance.LocalControlledCharacter) ||
-                (!SISClothingDurability_Config.EnabledForPlayerCommunity && __instance.IsControllableByPlayer() && __instance != Hud.Instance.LocalControlledCharacter) ||
-                (!SISClothingDurability_Config.EnabledForNPCs && !__instance.IsControllableByPlayer()) ||
-                (!SISClothingDurability_Config.ClothingDegradesOverTimeForPlayer && __instance == Hud.Instance.LocalControlledCharacter) ||
+        if (!SISClothingDurability_Utils.IsClothingDegradationEnabledForCharacter(__instance) ||
+                (!SISClothingDurability_Config.ClothingDegradesOverTimeForPlayer && __instance.IsControllableByPlayer() && __instance == Hud.Instance.LocalControlledCharacter) ||
                 (!SISClothingDurability_Config.ClothingDegradesOverTimeForPlayerCommunity && __instance.IsControllableByPlayer() && __instance != Hud.Instance.LocalControlledCharacter) ||
                 (!SISClothingDurability_Config.ClothingDegradesOverTimeForNPCs && !__instance.IsOnPlayersTeam()))
         {
