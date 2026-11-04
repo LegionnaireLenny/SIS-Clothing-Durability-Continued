@@ -183,140 +183,93 @@ public class SISClothingDurability_Manager
 
     public float ReduceDurability(Equipment equip, float amount = 1f)
     {
-        SISClothingDurability_Config.Log("Reducing durability for " + equip.GetPrototype().Name + ", amount = " + amount.ToString());
-        float num = -1f;
-        float num2;
-        if (amount <= 0f || equip == null)
+        if (amount <= 0f || 
+            equip == null ||
+            !(equip.GetAsCharacter() is Character owner) ||
+            !EquipmentDict.TryGetValue(equip.Id, out SISCD_ClothesDurabilityInfo equipInfo))
         {
-            num2 = num;
+            return -1f;
+        }
+
+        SISClothingDurability_Config.Log($"Reducing durability for {equip.GetPrototype().Name}; {equipInfo.Durability} - {amount} = {equipInfo.Durability - amount}");
+        equipInfo.Durability -= amount;
+        if (equipInfo.Durability <= 0)
+        {
+            equipInfo.IsBroken = true;
+            if (owner.AliveAndNotZombie && !owner.IsSleepingOrUnconscious())
+            {
+                if (SISClothingDurability_Utils.IsSpeakingOnItemBrokenEnabledForCharacter(owner))
+                {
+                    try
+                    {
+                        owner.Speak(GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId));
+                    }
+                    catch { }
+                }
+
+                if (SISClothingDurability_Config.ShowStatusMsgOnClothingBroken &&
+                    owner == Hud.Instance.LocalControlledCharacter)
+                {
+                    try
+                    {
+                        string text = GameImpl.Translate(SISClothingDurability_Config.SpeechTranslateKey).Replace("%1", GameImpl.Translate(equip.GetPrototype().GetNameKey()));
+                        HudBehaviour.Instance.SetStatusBarMsg(text);
+                    }
+                    catch { }
+                }
+            }
+
+            if (SISClothingDurability_Config.PlaySoundOnClothingBroken)
+            {
+                try
+                {
+                    SoundManager.PlaySound3DFromList(SISClothingDurability_Config.SoundsClothingBroken, equip.GetAsCharacter().Pos);
+                }
+                catch { }
+            }
+
+            if (SISClothingDurability_Config.ShowNotificationOnClothingBroken)
+            {
+                try
+                {
+                    NotificationManager.Instance.AddEquipmentNotification(owner, owner, equip, 1);
+                }
+                catch { }
+            }
+
+            RemoveEquipment(equip.Id);
+            owner.Inventory.Remove(owner, equip);
+            EquipmentPrototype scrapParts = GameImpl.Instance.FindEquipmentPrototypeByName(SISClothingDurability_Config.PrototypePartsOnClothingBroken);
+            if (scrapParts != null)
+            {
+                int clothingMinPartsOnBroken = SISClothingDurability_Config.GetClothingMinPartsOnBroken(equip.GetPrototype().Name);
+                int clothingMaxPartsOnBroken = SISClothingDurability_Config.GetClothingMaxPartsOnBroken(equip.GetPrototype().Name);
+                int num3 = SISClothingDurability_Utils.NextBetweenInts(clothingMinPartsOnBroken, clothingMaxPartsOnBroken);
+                if (num3 > 0)
+                {
+                    Equipment equipment = Equipment.Spawn(scrapParts, num3);
+                    owner.Inventory.Add(owner, equipment);
+                }
+            }
+            OnBrokenEquipment(equip);
         }
         else
         {
-            SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo;
-            EquipmentDict.TryGetValue(equip.Id, out siscd_ClothesDurabilityInfo);
-            bool flag2 = false;
-            if (siscd_ClothesDurabilityInfo != null)
-            {
-                if (siscd_ClothesDurabilityInfo.IsBroken)
-                {
-                    return siscd_ClothesDurabilityInfo.Durability;
-                }
-                num = Mathf.Max(siscd_ClothesDurabilityInfo.Durability - amount, 0f);
-                SISClothingDurability_Config.Log("Reduced durability for " + equip.GetPrototype().Name + ", dur = " + num.ToString());
-                EquipmentDict[equip.Id].Durability = num;
-                if (num == 0f)
-                {
-                    flag2 = true;
-                }
-            }
-            if (flag2)
-            {
-                EquipmentDict[equip.Id].IsBroken = true;
-                if (!equip.GetAsCharacter().Zombie && !equip.GetAsCharacter().IsSleepingOrUnconscious() && equip.GetAsCharacter().Alive)
-                {
-                    if (equip.GetAsCharacter() == Hud.Instance.LocalControlledCharacter)
-                    {
-                        if (SISClothingDurability_Config.ShowStatusMsgOnClothingBroken)
-                        {
-                            try
-                            {
-                                string text = GameImpl.Translate(SISClothingDurability_Config.SpeechTranslateKey).Replace("%1", GameImpl.Translate(equip.GetPrototype().GetNameKey()));
-                                HudBehaviour.Instance.SetStatusBarMsg(text);
-                            }
-                            catch
-                            {
-                            }
-                        }
-                        if (SISClothingDurability_Config.CharactersSpeakOnClothingBroken)
-                        {
-                            try
-                            {
-                                Speech speech = GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId);
-                                equip.GetAsCharacter().Speak(speech);
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if ((equip.GetAsCharacter().IsOnPlayersTeam() && SISClothingDurability_Config.EnabledForPlayerCommunity) || (SISClothingDurability_Config.EnabledForNPCs && !equip.GetAsCharacter().IsControllableByPlayer()))
-                        {
-                            if (SISClothingDurability_Config.CharactersSpeakOnClothingBroken)
-                            {
-                                try
-                                {
-                                    Speech speech2 = GameImpl.Instance.FindSpeechByUniqueID(SISClothingDurability_Config.SpeechClothingBrokenUniqueId);
-                                    equip.GetAsCharacter().Speak(speech2);
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                    }
-                }
-                if (SISClothingDurability_Config.PlaySoundOnClothingBroken)
-                {
-                    try
-                    {
-                        SoundManager.PlaySound3DFromList(SISClothingDurability_Config.SoundsClothingBroken, equip.GetAsCharacter().Pos);
-                    }
-                    catch
-                    {
-                    }
-                }
-                if (SISClothingDurability_Config.ShowNotificationOnClothingBroken)
-                {
-                    try
-                    {
-                        NotificationManager.Instance.AddEquipmentNotification(equip.GetAsCharacter(), equip.GetAsCharacter(), equip, 1);
-                    }
-                    catch
-                    {
-                    }
-                }
-                Character asCharacter = equip.GetAsCharacter();
-                RemoveEquipment(equip.Id);
-                asCharacter.Inventory.Remove(equip.GetAsCharacter(), equip);
-                EquipmentPrototype equipmentPrototype = GameImpl.Instance.FindEquipmentPrototypeByName("Rag");
-                if (equipmentPrototype != null)
-                {
-                    int clothingMinPartsOnBroken = SISClothingDurability_Config.GetClothingMinPartsOnBroken(equip.GetPrototype().Name);
-                    int clothingMaxPartsOnBroken = SISClothingDurability_Config.GetClothingMaxPartsOnBroken(equip.GetPrototype().Name);
-                    int num3 = SISClothingDurability_Utils.NextBetweenInts(clothingMinPartsOnBroken, clothingMaxPartsOnBroken);
-                    if (num3 > 0)
-                    {
-                        Equipment equipment = Equipment.Spawn(equipmentPrototype, num3);
-                        asCharacter.Inventory.Add(asCharacter, equipment);
-                    }
-                }
-                OnBrokenEquipment(equip);
-            }
-            else
-            {
-                OnReducedDurability(equip, num);
-            }
-            num2 = num;
+            OnReducedDurability(equip, equipInfo.Durability);
         }
-        return num2;
+        return equipInfo.Durability;
     }
 
     public bool RemoveEquipment(Equipment equip)
     {
-        bool flag3;
-        if (equip != null)
+        if (equip == null)
         {
-            bool flag2 = this.RemoveEquipment(equip.Id);
-            OnRemovedEquipment(equip, flag2);
-            flag3 = flag2;
+            return false;
         }
-        else
-        {
-            flag3 = false;
-        }
-        return flag3;
+
+        bool success = RemoveEquipment(equip.Id);
+        OnRemovedEquipment(equip, success);
+        return success;
     }
 
     private bool RemoveEquipment(int id)

@@ -75,6 +75,22 @@ public class SISClothingDurability_Utils
         }
     }
 
+    public static bool IsClothingDegradationEnabledForCharacter(Character character)
+    {
+        return (EnabledForNPCs && !character.IsOnPlayersTeam()) ||
+            (EnabledForPlayerCommunity && character.IsOnPlayersTeam() && character != Hud.Instance.LocalControlledCharacter) ||
+            (EnabledForPlayer && character.IsOnPlayersTeam() && character == Hud.Instance.LocalControlledCharacter);
+    }
+
+    public static bool IsSpeakingOnItemBrokenEnabledForCharacter(Character character)
+    {
+        return CharactersSpeakOnClothingBroken && 
+            ((EnabledForNPCs && !character.IsOnPlayersTeam()) ||
+            (EnabledForPlayerCommunity && character.IsOnPlayersTeam() && character != Hud.Instance.LocalControlledCharacter) ||
+            (EnabledForPlayer && character.IsOnPlayersTeam() && character == Hud.Instance.LocalControlledCharacter));
+    }
+
+
     public static float NextFloat()
     {
         double num = Session.Instance.DeterministicRand.NextDouble();

@@ -297,20 +297,21 @@ public class SISClothingDurability_Config
     public static string ClothingTypeSettingsOtherModsFilePath = "";
     public static string ModIdentifierFilePath = "";
     public static string LogFilePath = "";
-    private static string SaveFilename = "/Save_ClothingDurability.sav";
-    private static string SettingsFilename = "/Settings_ClothingDurability.xml";
-    private static string ClothingTypeSettingsOtherModsFilename = "/Settings_ClothingAddon.xml";
-    private static string ModIdentifierFilename = "/SISCLOTHINGDURABILITY.txt";
-    private static string LogFilename = "/Log_SISClothingDurability.txt";
+    private static readonly string SaveFilename = "/Save_ClothingDurability.sav";
+    private static readonly string SettingsFilename = "/Settings_ClothingDurability.xml";
+    private static readonly string ClothingTypeSettingsOtherModsFilename = "/Settings_ClothingAddon.xml";
+    private static readonly string ModIdentifierFilename = "/SISCLOTHINGDURABILITY.txt";
+    private static readonly string LogFilename = "/Log_SISClothingDurability.txt";
 
-    public const string HeavySewingKitNameKey = "SISCD_HeavySewingKit";
-    public const string SewingKitNameKey = "SISCD_SewingKit";
-    public static string SpeechClothingBrokenUniqueId = "SISCD_NPCClothingBroken";
-    public static string SpeechTranslateKey = "MEMORY_SISCD_YourClothingBroke";
-    public static string RepairNormalClothingRecipeUniqueId = "SISCD_RepairNormalClothing";
-    public static string RepairNormalClothingRecipeNameKey = "RECIPE_SISCD_RepairNormalClothing";
-    public static string RepairArmorClothingRecipeUniqueId = "SISCD_RepairArmorClothing";
-    public static string RepairArmorClothingRecipeNameKey = "RECIPE_SISCD_RepairArmorClothing";
+    public static readonly string HeavySewingKitNameKey = "SISCD_HeavySewingKit";
+    public static readonly string SewingKitNameKey = "SISCD_SewingKit";
+    public static readonly string PrototypePartsOnClothingBroken = "Rag";
+    public static readonly string SpeechClothingBrokenUniqueId = "SISCD_NPCClothingBroken";
+    public static readonly string SpeechTranslateKey = "MEMORY_SISCD_YourClothingBroke";
+    public static readonly string RepairNormalClothingRecipeUniqueId = "SISCD_RepairNormalClothing";
+    public static readonly string RepairNormalClothingRecipeNameKey = "RECIPE_SISCD_RepairNormalClothing";
+    public static readonly string RepairArmorClothingRecipeUniqueId = "SISCD_RepairArmorClothing";
+    public static readonly string RepairArmorClothingRecipeNameKey = "RECIPE_SISCD_RepairArmorClothing";
 
     public static List<Resource<AudioClip>> SoundsClothingBroken = new List<Resource<AudioClip>>();
 

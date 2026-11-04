@@ -229,15 +229,12 @@ public class Character_OnDamaged__Patch
         absorbedByVest = false;
         if (__instance == null ||
             !SISClothingDurability_Config.ClothingDegradesOnDamaged ||
-            (!SISClothingDurability_Config.EnabledForPlayer && __instance == Hud.Instance.LocalControlledCharacter) ||
-            (!SISClothingDurability_Config.EnabledForPlayerCommunity && __instance.IsOnPlayersTeam() && __instance != Hud.Instance.LocalControlledCharacter) ||
-            (!SISClothingDurability_Config.EnabledForNPCs && !__instance.IsControllableByPlayer()))
+            !SISClothingDurability_Utils.IsClothingDegradationEnabledForCharacter(__instance))
         {
             return;
         }
 
         SISClothingDurability_Config.Log($"OnDamaged; {__instance.GetDisplayNameString()};{injuryLocation};{injuryType};{damage} {(source != null ? source.GetDisplayNameString() : "NoSource")}");
-
         if (injuryType == InjuryType.Fire)
         {
             SISClothingDurability_Config.Log("Injury is Fire, damaging all clothes");
@@ -255,18 +252,10 @@ public class Character_OnDamaged__Patch
         }
         else
         {
-            List<Equipment> equipmentDamagedByInjuryLocation = GetEquipmentsAtInjuryLocation(__instance, injuryLocation);
-            foreach (Equipment equipment in equipmentDamagedByInjuryLocation)
+            foreach (Equipment equipment in GetEquipmentsAtInjuryLocation(__instance, injuryLocation))
             {
                 DamageSingleEquipment(__instance, injuryType, equipment, damage);
             }
-            //if (!(injuryLocation == InjuryLocation.Head && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.Glasses)))
-            //{
-            //    if (SISClothingDurability_Utils.IsInjuryLocationBottom(injuryLocation) && SISClothingDurability_Utils.IsWearingClothingType(__instance, ClothingType.Shoes))
-            //    {
-            //    }
-            //}
         }
     }
-
 }
