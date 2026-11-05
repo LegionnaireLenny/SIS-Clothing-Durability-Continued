@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <StorySettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <NativeName>SIS Clothing Durability</NativeName>
+  <SteamWorkshopId>3833886995</SteamWorkshopId>
+  <NativeName>SIS Clothing Durability Continued</NativeName>
   <NativeDescription>This mod adds clothing durability and repair to the game. Your clothing can now break over time and depending on the damage you (or other characters) take. Clothing can be repaired using sewing kits that you will find around the world.</NativeDescription>
   <IsMod>true</IsMod>
   <ProcedurallyGenerated>false</ProcedurallyGenerated>
@@ -29,4 +30,6 @@
     <WorkshopId>0</WorkshopId>
   </HitTheRoadStory>
   <HitTheRoadKeepVariables />
+  <HitTheRoadMinFuelPercent>75</HitTheRoadMinFuelPercent>
+  <HitTheRoadMaxDamagePercent>50</HitTheRoadMaxDamagePercent>
 </StorySettings>
