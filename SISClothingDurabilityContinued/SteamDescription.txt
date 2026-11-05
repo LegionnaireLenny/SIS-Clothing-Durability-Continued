@@ -65,7 +65,7 @@ The settings file can be found inside the mod's folder under "Settings_ClothingD
 [*] ClothingTypes. List of clothing settings.
 [/list]
 
-[h3]ClothingTypeSettings[/h3]
+[h2]ClothingTypeSettings[/h2]
 These are the durability settings for any clothing item. You can see them in the configuration file.
 [list]
 [*] Name. Name of the clothing. This is the prototype name, which will be the name of the file of the clothing in the "Equipment" folder.
@@ -87,3 +87,6 @@ These are the durability settings for any clothing item. You can see them in the
 [*] DegradeOnTrapExplosionDamagePcnt. The damage to the durability if explosion. Between 0-1. (default 0.6)
 [*] DegradeOnZombieBiteDamagePcnt. The damage to the durability if explosion. Between 0-1. (default 0.2)
 [/list]
+
+[h2]Credits[/h2]
+Erikem, Luo2430, and Bob!
