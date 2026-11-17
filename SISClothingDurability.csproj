@@ -116,8 +116,8 @@
     <Content Include="SISClothingDurabilityContinued\Recipes.xml" />
     <Content Include="SISClothingDurabilityContinued\Scripts\ClothingBroken.xml" />
     <Content Include="SISClothingDurabilityContinued\Settings.xml" />
+    <Content Include="SISClothingDurabilityContinued\Settings_ClothingAddon.xml" />
     <Content Include="SISClothingDurabilityContinued\Settings_ClothingDurability.xml" />
-    <Content Include="SISClothingDurabilityContinued\SISCD_ClothingAddon.xml" />
     <Content Include="SISClothingDurabilityContinued\SISCLOTHINGDURABILITY.txt" />
     <Content Include="SISClothingDurabilityContinued\Sounds\clothingbreaks_sound1.wav" />
     <Content Include="SISClothingDurabilityContinued\Sounds\clothingbreaks_sound2.wav" />

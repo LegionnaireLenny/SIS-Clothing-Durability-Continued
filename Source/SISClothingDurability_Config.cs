@@ -129,11 +129,11 @@ public class SISClothingDurability_Config
         }
     }
 
-    public static void Log(string message)
+    public static void Log(string message, bool alwaysLog = false)
     {
         try
         {
-            if (LoggingEnabled)
+            if (LoggingEnabled || alwaysLog)
             {
                 using (StreamWriter streamWriter = File.AppendText(LogFilePath))
                 {

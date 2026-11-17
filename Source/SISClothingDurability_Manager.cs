@@ -27,9 +27,7 @@ public class SISClothingDurability_Manager
             {
                 EquipmentDict.Add(siscd_ClothesDurabilityInfo.Id, siscd_ClothesDurabilityInfo);
             }
-            catch
-            {
-            }
+            catch { }
         }
     }
 
@@ -78,11 +76,19 @@ public class SISClothingDurability_Manager
             return false;
         }
 
-        durability = Mathf.Clamp(durability, 0f, maxDurability);
-        SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo = new SISCD_ClothesDurabilityInfo(equip.Id, durability, maxDurability);
-        EquipmentDict.Add(equip.Id, siscd_ClothesDurabilityInfo);
-        SISClothingDurability_Config.Log($"Added equipment with ID {equip.Id} {equip.GetPrototype().Name};{durability};{maxDurability}");
-        OnAddedEquipment(equip, siscd_ClothesDurabilityInfo);
+        try
+        {
+            durability = Mathf.Clamp(durability, 0f, maxDurability);
+            SISCD_ClothesDurabilityInfo siscd_ClothesDurabilityInfo = new SISCD_ClothesDurabilityInfo(equip.Id, durability, maxDurability);
+            EquipmentDict.Add(equip.Id, siscd_ClothesDurabilityInfo);
+            SISClothingDurability_Config.Log($"Added equipment with ID {equip.Id} {equip.GetPrototype().Name};{durability};{maxDurability}");
+            OnAddedEquipment(equip, siscd_ClothesDurabilityInfo);
+        }
+        catch (Exception ex)
+        {
+            SISClothingDurability_Config.Log($"Error adding equipment: {equip.Id}-{equip.GetPrototype().Name};{ex}", true);
+            return false;
+        }
         return true;
     }
 
@@ -167,7 +173,7 @@ public class SISClothingDurability_Manager
             if (siscd_ClothesDurabilityInfo != null)
             {
                 num2 = Mathf.Min(siscd_ClothesDurabilityInfo.Durability + amount, siscd_ClothesDurabilityInfo.MaxDurability);
-                SISClothingDurability_Config.Log("Increased durability for " + equip.GetPrototype().Name + ", dur = " + num2.ToString());
+                SISClothingDurability_Config.Log($"Increased durability for {equip.GetPrototype().Name}, dur = {num2}");
                 EquipmentDict[equip.Id].Durability = num2;
             }
             num = num2;
